@@ -1,0 +1,550 @@
+/* ==================================== GENERAL STYLES ==================================== */
+:root {
+    --primary-color: #f7d28b;
+    --secondary-color: #EAA23E;
+    --warning-color: #ff8a00;
+    --black-color: #000;
+    --lightblack-color: #272727;
+    --white-color: #fff;
+    --wheat-color: #f5deb3;
+    --border-color: #ccc;
+    --invalid-color: #B92326;
+    --valid-color: #8BC34A;
+    --placeholder-color: #a5a6a7d2;
+    --icon-color: #89d8e3;
+    --scrollbar-color: #d3d3d4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: system-ui, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+/* ==================================== SCROLLBAR ==================================== */
+::-webkit-scrollbar {
+    width: 20px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 5px solid transparent;
+    box-shadow: inset 0 0 0 10px var(--primary-color);
+
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+
+
+/* ==================================== NAVBAR ==================================== */
+.container__navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 30rem;
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: all 300ms linear;
+    z-index: 999;
+}
+
+.container__navbar--visible {
+    right: 0;
+}
+
+.navbar__list {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 7rem;
+    list-style: none;
+}
+
+.navbar__button {
+    position: relative;
+    width: 100%;
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 1rem;
+    background-color: transparent;
+    border: none;
+    color: var(--black-color);
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 1px;
+    z-index: 5;
+}
+
+.navbar__button:hover,
+.navbar__button--active {
+    background-color: var(--black-color);
+    color: var(--white-color);
+}
+
+.menu__toggle {
+    display: block;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 4.8rem;
+    height: 4.8rem;
+    line-height: 5rem;
+    font-size: 2.5rem;
+    text-align: center;
+    background-color: var(--primary-color);
+    border-radius: 3rem;
+    cursor: pointer;
+    z-index: 9999;
+    transition: all 500ms linear;
+}
+
+.menu__icon {
+    color: var(--black-color);
+    display: block;
+    position: absolute;
+    transition: all 300ms linear;
+    width: 3.5rem;
+}
+
+.icon-bars {
+    top: 14%;
+    left: 14%;
+    opacity: 1;
+}
+
+.icon-xmark {
+    top: 14%;
+    left: 14%;
+    opacity: 0;
+}
+
+/* ==================================== CONTENT ==================================== */
+
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    color: var(--white-color);
+}
+
+
+/* ==================================== HOME PAGE ==================================== */
+.content__info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+@keyframes text-animation {
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 200%;
+    }
+}
+
+@-webkit-keyframes text-animation {
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 200%;
+    }
+}
+
+@-moz-keyframes text-animation {
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 200%;
+    }
+}
+
+.info__title {
+    margin-bottom: 1rem;
+    font-size: 3.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--warning-color));
+    background-size: 200%;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    animation: text-animation 2s infinite linear;
+}
+
+.info__text {
+    width: 90%;
+    font-size: 1.5rem;
+    margin: auto;
+    padding: 1rem;
+    background-color: rgb(0 0 0 / 0.7);
+    box-shadow: 0 0 30px rgb(227 228 237 / 0.57);
+}
+
+.info__credit {
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    color: var(--white-color);
+    opacity: 0.8;
+}
+
+.info__credit * {
+    color: inherit;
+}
+
+.info__credit>a:hover {
+    color: var(--warning-color);
+}
+
+
+
+/* ==================================== MENU PAGE ==================================== */
+.container__title {
+    position: relative;
+    width: 40rem;
+    font-size: 3rem;
+    margin: 5rem 0 10rem;
+    box-shadow: 0 11px 24px -17px rgb(0 0 0 / 0.15);
+    text-align: center;
+}
+
+.container__title::before {
+    content: '';
+    position: absolute;
+    top: 103%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 59%;
+    height: 5rem;
+    border-radius: 0 0 15px 15px;
+    box-shadow: inset 10px 0px 10px -9px rgb(0 0 0 / 0.8), inset -10px 0px 10px -9px rgb(0 0 0 / 0.8);
+    z-index: 5;
+}
+
+.container__title::after {
+    content: 'Come and try the dishes with the best ingredients';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    font-size: 1.8rem;
+    padding: 0.5rem;
+    background: linear-gradient(40deg, var(--primary-color), var(--secondary-color));
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 18px 24px -5px rgb(0 0 0 / 0.15);
+}
+
+.title {
+    color: var(--secondary-color);
+}
+
+.container__dishes {
+    margin-top: 6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(250px - 1rem), 1fr));
+    gap: 4rem;
+    max-width: 95%;
+    width: 100rem;
+    padding: 1rem;
+    color: #000;
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        translate: 20rem 0;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+.container__dish {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 0 0 0 1.5rem;
+    background: linear-gradient(var(--primary-color), var(--secondary-color));
+    border-radius: 15px 0 0 15px;
+    text-align: center;
+    transition: transform 300ms linear;
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 55% contain 1%;
+}
+
+.container__dish:hover {
+    box-shadow: 0 18px 24px -5px rgb(0 0 0 / 0.15);
+    transform: translateY(-1rem);
+}
+
+.dish__image {
+    width: 100%;
+    height: 16rem;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--border-color);
+}
+
+.dish__info {
+    flex-grow: 1;
+    font-size: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    line-height: 1.5rem;
+}
+
+.dish__price {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--white-color);
+}
+
+
+
+/* ==================================== ABOUT PAGE ==================================== */
+.content__description {
+    width: 90%;
+    margin: 8rem 0;
+    padding: 1rem;
+    background-color: rgb(0 0 0 / 0.7);
+    box-shadow: 0 0 30px rgb(227 228 237 / 0.57);
+}
+
+.content__description > *,
+.content__opening > *{
+    margin-bottom: 1rem;
+}
+
+.description__title {
+    font-size: 4rem;
+    text-align: center;
+}
+
+.description__text {
+    font-size: 2.3rem;
+}
+
+
+.content__opening {
+    width: 50%;
+    font-size: 1.7rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: rgb(0 0 0 / 0.7);
+    text-align: center;
+
+}
+
+.opening__title {
+    font-size: 3.3rem;
+}
+
+/* ==================================== CONTACT PAGE ==================================== */
+.container__contact {
+    display: flex;
+    flex-flow: column wrap;
+    padding: 1.5rem 0 4.5rem;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 80rem;
+    /* background-color: var(--lightblack-color); */
+}
+
+.contact__cards {
+    width: 80%;
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(250px - 0.7rem), 1fr));
+    grid-auto-rows: 250px;
+    gap: 1.5rem;
+    transform: translateY(35px);
+    z-index: 5;
+}
+
+.cards__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 2rem;
+    background-color: var(--white-color);
+    color: var(--black-color);
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.card__icon {
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    fill: var(--icon-color);
+}
+
+.card__title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.card__text {
+    width: 17rem;
+    font-size: 1.5rem;
+}
+
+.contact__form {
+    width: 90%;
+    padding: 4.5rem 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 85%;
+    background-color: var(--icon-color);
+}
+
+.form__title {
+    font-size: 4.5rem;
+    font-weight: bold;
+    margin-bottom: 2.5rem;
+    color: var(--black-color);
+}
+
+.contact__form>.form__group {
+    margin-bottom: 2.5rem;
+}
+
+.form__group {
+    width: 90%;
+    position: relative;
+}
+
+.form__input,
+.form__textarea {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+}
+
+.form__input {
+    font-size: 1.7rem;
+    border: 1px solid var(--border-color);
+}
+
+.form__label {
+    position: absolute;
+    top: 1.2rem;
+    left: 1rem;
+    opacity: 0;
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    background-color: var(--lightblack-color);
+    color: var(--white-color);
+    transition: all 300ms linear;
+    pointer-events: none;
+}
+
+.form__textarea {
+    font-size: 1.5rem;
+    border: 1px solid var(--border-color);
+    resize: none;
+}
+
+.form__input::placeholder,
+.form__textarea::placeholder {
+    color: var(--placeholder-color);
+}
+
+.form__input:focus~.form__label,
+.form__input:not(:placeholder-shown)~.form__label,
+.form__textarea:focus~.form__label {
+    top: -1rem;
+    opacity: 1;
+    z-index: 1;
+}
+
+.form__input:focus::placeholder,
+.form__textarea:focus::placeholder {
+    color: transparent;
+}
+
+.form__input:focus::-webkit-input-placeholder,
+.form__textarea:focus::placeholder {
+    color: transparent;
+}
+
+.form__input:focus::-moz-input-placeholder,
+.form__textarea:focus::placeholder {
+    color: transparent;
+}
+
+.form__input:focus:invalid,
+.form__textarea:focus:invalid {
+    outline-color: var(--invalid-color);
+}
+
+.form__input:focus:valid,
+.form__textarea:focus:valid {
+    outline-color: var(--valid-color);
+}
+
+.form__button {
+    width: 12rem;
+    height: 4rem;
+    font-weight: bold;
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    background-color: inherit;
+    border: 2px solid var(--white-color);
+    color: #082b79;
+    cursor: pointer;
+}
+
+.form__button:hover {
+    background-color: var(--white-color);
+    box-shadow: 0 10px 10px -8px rgb(0 0 0 / 0.15);
+}
