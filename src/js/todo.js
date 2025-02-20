@@ -1,11 +1,10 @@
 const todos = [];
 
-class Todo {
+class TodoList {
   constructor(...args) {
     this._title = args[0];
-    this._description = args[1];
-    this._dueDate = args[2];
-    this._priority = args[3];
+    this._dueDate = args[1];
+    this._priority = args[2];
     this._checklist = false;
   }
 
@@ -14,13 +13,6 @@ class Todo {
   }
   setTitle(title) {
     this._title = title;
-  }
-
-  getDescription() {
-    return this._description;
-  }
-  setDescription(description) {
-    this._description = description;
   }
 
   getDate() {
@@ -46,8 +38,10 @@ class Todo {
 }
 
 function createTodo(...args) {
-  const todo = new Todo(...args);
+  const todo = new TodoList(...args);
   todos.push(todo);
+
+  console.log( todos );
 }
 
 function sortByPriority() {
@@ -67,8 +61,13 @@ function search(value) {
   });
 }
 
+function getTodoList() {
+  return todos;
+}
+
 export {
   createTodo,
   sortByPriority,
   search,
+  getTodoList,
 }
