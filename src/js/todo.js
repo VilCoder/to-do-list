@@ -40,8 +40,6 @@ class TodoList {
 function createTodo(...args) {
   const todo = new TodoList(...args);
   todos.push(todo);
-
-  console.log( todos );
 }
 
 function sortByPriority() {

@@ -1,9 +1,11 @@
 import { format } from 'date-fns';
+
 import { createTodo } from '../js/todo';
+import { openDialog, closeDialog } from './handlerDialog';
 import { updateTodoList } from './display-todolist';
 
 function addTask() {
-  DialogHandler.open();
+  openDialog();
 
   const addTaskButton = document.querySelector('.form__button');
   addTaskButton.removeEventListener('click', addTaskHandler);
@@ -17,7 +19,7 @@ function addTaskHandler() {
   let endDate;
 
   try {
-    const formattedDated = new Date(date.value); 
+    const formattedDated = new Date(date.value);
     endDate = format(formattedDated, 'y-M-d p');
   } catch (error) {
     console.log(error.message);
@@ -30,29 +32,9 @@ function addTaskHandler() {
   date.value = '';
   priority.value = '';
 
-  DialogHandler.close();
+  closeDialog();
   updateTodoList();
 }
-
-const DialogHandler = (function () {
-  const dialog = document.querySelector('.layout__dialog');
-
-  const open = () => {
-    dialog.showModal();
-    dialog.classList.add('dialog__visible');
-  };
-
-  const close = () => {
-    dialog.classList.remove("dialog__visible");
-
-    setTimeout(() => {
-      dialog.close();
-    }, 500);
-  };
-
-  return {open, close};
-})();
-
 
 export {
   addTask,

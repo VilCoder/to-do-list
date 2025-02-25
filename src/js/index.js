@@ -3,7 +3,6 @@ import '../css/styles.css';
 // import '../css/responsive.css';
 
 import { addTask } from './add-task';
-// import { updateTodoList } from './display-todolist';
 
 document.addEventListener('DOMContentLoaded', () => {
   const aside = document.querySelector('.layout__aside');
@@ -40,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
       switch (index) {
         case 0:
           addTask();
-          // updateTodoList();
           break;
       }
     });

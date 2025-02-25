@@ -10,7 +10,7 @@
 }
 
 html {
-  font-size: 62.5%; /* Equivalente a 10px */
+  font-size: 62.5%; /* Equivalent to 10px */
 }
 
 body {
@@ -263,20 +263,9 @@ svg {
   cursor: pointer;
 }
 
-/* .form__button::before {
-  position: absolute;
-  top: 100%;
-  left: 100%;
-  width: 20rem;
-  height: 15rem;
-  background-color: #560bad;
-  transition: all 0.7s;
-  border: 1px solid #000;
-} */
-
 /* ====================== MAIN ======================*/
 .layout__main {
-  padding: 2rem 0 0 2rem;
+  padding: 2rem 2rem 0;
 }
 
 .layout__main > *,
@@ -285,11 +274,13 @@ svg {
 }
 
 .todo__list {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   column-gap: 0.5rem;
-  width: 20rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--icon-primary-color);
 }
 
 .list__checklist[type="checkbox"] {
@@ -297,16 +288,16 @@ svg {
   place-content: center;
   -webkit-appearance: none;
   appearance: none;
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 50%;
   border: 1px solid #000;
 }
 
 .list__checklist[type="checkbox"]::before {
   content: '';
-  width: 0.6rem;
-  height: 0.6rem;
+  width: 1rem;
+  height: 1rem;
   box-shadow: inset 10px 10px #000;
   border-radius: 50%;
   transform: scale(0);
@@ -318,11 +309,36 @@ svg {
 }
 
 .list__title {
-  width: calc(100% - 1.7rem);
-
+  width: calc(100% - 2.2rem);
 }
 
 .list__date {
+  display: flex;
+  align-items: center;
   position: relative;
-  left: 3rem;
+  left: 1.8rem;
+  font-size: 1.3rem;
+  margin-top: 0.3rem;
+  line-height: 1rem;
+}
+
+.list__date-icon {
+  display: inline-block;
+  width: 1.5rem;
+}
+
+.list__date-icon:last-child {
+  margin-left: 0.5rem;
+}
+
+.list__remove {
+  position: absolute;
+  top: 0.5rem;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  fill: var(--icon-second-color);
 }
