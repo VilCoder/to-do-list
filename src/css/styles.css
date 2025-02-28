@@ -149,7 +149,6 @@ svg {
   border: none;
   text-align: start;
   cursor: pointer;
-
 }
 
 .task__text {
@@ -164,6 +163,9 @@ svg {
   color: var(--icon-second-color);
 }
 
+.search__text:focus {
+  outline: none;
+}
 
 /* ====================== DIALOG ======================*/
 .layout__dialog::backdrop {
@@ -333,7 +335,7 @@ svg {
 
 .list__remove {
   position: absolute;
-  top: 0.5rem;
+  top: 0.3rem;
   right: 0;
   width: 2rem;
   height: 2rem;
@@ -341,4 +343,9 @@ svg {
   border: 0;
   cursor: pointer;
   fill: var(--icon-second-color);
+}
+
+.list__notfound {
+  font-size: 2.5rem;
+  font-weight: bold;
 }

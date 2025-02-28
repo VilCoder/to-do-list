@@ -2,7 +2,8 @@ import '../css/reset.css';
 import '../css/styles.css';
 // import '../css/responsive.css';
 
-import { addTask } from './add-task';
+import { displayAddTask } from './addTask';
+import { displaySearch } from './search';
 
 document.addEventListener('DOMContentLoaded', () => {
   const aside = document.querySelector('.layout__aside');
@@ -38,7 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', (e) => {
       switch (index) {
         case 0:
-          addTask();
+          displayAddTask();
+          break;
+        case 1:
+          displaySearch(e.currentTarget);
           break;
       }
     });

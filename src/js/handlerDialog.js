@@ -1,5 +1,3 @@
-const dialog = document.querySelector('.layout__dialog');
-
 function openDialog() {
   dialog.showModal();
   dialog.classList.add('dialog__visible');

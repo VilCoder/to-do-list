@@ -1,10 +1,10 @@
 import { format } from 'date-fns';
 
-import { createTodo } from '../js/todo';
+import { createTodo } from './todoList';
 import { openDialog, closeDialog } from './handlerDialog';
-import { updateTodoList } from './display-todolist';
+import { displayToday } from './today';
 
-function addTask() {
+function displayAddTask() {
   openDialog();
 
   const addTaskButton = document.querySelector('.form__button');
@@ -33,9 +33,9 @@ function addTaskHandler() {
   priority.value = '';
 
   closeDialog();
-  updateTodoList();
+  displayToday();
 }
 
 export {
-  addTask,
+  displayAddTask,
 };
