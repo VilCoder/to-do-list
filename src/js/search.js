@@ -8,13 +8,13 @@ function displaySearch(elem) {
     if (e.key === "Enter") {
       const main = document.querySelector('.layout__main');
       main.textContent = '';
-      
+
       let searchValue = elem.value.toLowerCase();
       const searchedValue = search(searchValue);
 
       closeDialog();
 
-      if ( !searchValue || (searchedValue.length === 0) ) {
+      if (!searchValue || (searchedValue.length === 0)) {
         main.insertAdjacentHTML(
           'beforeend',
           `<div class="todo__list">
@@ -29,8 +29,10 @@ function displaySearch(elem) {
       searchedValue.forEach((todo, index) => {
         updateTodoList(main, todo, index)
 
-        const todoList = document.querySelector(`.todo__list-${index}`);
-        removeTodoList(todoList, index);
+        const todoList = document.querySelector(`.todo__list`).classList;
+        console.log(todoList);
+
+        // removeTodoList(todoList, index);
       });
     }
   });

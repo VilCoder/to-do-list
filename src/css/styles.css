@@ -6,7 +6,7 @@
   --icon-second-color: #dd4c3f;
   --layout-bg: #fff;
   --aside-color: #fcfaf8;
-  --place-color: #aaa;
+  --placeholder-color: #aaa;
 }
 
 html {
@@ -157,6 +157,8 @@ svg {
 
 .option__active {
   background-color: #fff0e5;
+  color: var(--icon-second-color);
+  fill: var(--icon-second-color);
 }
 
 .options__icon {
@@ -165,6 +167,18 @@ svg {
 
 .search__text:focus {
   outline: none;
+}
+
+.search__text:focus::placeholder {
+  color: var(--icon-second-color);
+}
+
+.user-options__icon {
+  color: var(--icon-second-color);
+}
+
+.icon__active {
+  color: var(--icon-second-color);
 }
 
 /* ====================== DIALOG ======================*/
@@ -193,10 +207,21 @@ svg {
 }
 
 .dialog__form {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+.form__close {
+  position: absolute;
+  top: 0.7rem;
+  right: 1rem;
+  width: 2.3rem;
+  height: 2.3rem;
+  cursor: pointer;
+  fill: #222;
 }
 
 .form__group {
@@ -204,7 +229,7 @@ svg {
   justify-content: space-between;
 }
 
-.form__group:first-child {
+.form__group:first-of-type {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -213,7 +238,7 @@ svg {
   border-bottom: 1px solid var(--icon-primary-color);
 }
 
-.form__group:last-child {
+.form__group:last-of-type {
   padding: 1.5rem;
 }
 
@@ -227,6 +252,10 @@ svg {
   padding: 0.5rem;
 }
 
+.form__input:focus {
+  outline: 1px solid var(--icon-primary-color);
+}
+
 #title {
   font-size: 2.5rem;
   font-weight: bold;
@@ -234,15 +263,11 @@ svg {
 }
 
 #title::placeholder {
-  color: var(--place-color);
+  color: var(--placeholder-color);
 }
 
-#title:focus{
-  outline: none;
-}
-
-#date, #priority {
-  flex-basis: 42%;
+#date, #priority, #category {
+  flex-basis: 15%;
 }
 
 .icon-tabler-dots {

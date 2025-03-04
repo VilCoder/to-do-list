@@ -13,6 +13,7 @@ function displayAddTask() {
 }
 
 function addTaskHandler() {
+  const category = document.querySelector('#category');
   const title = document.querySelector('#title');
   const date = document.querySelector('#date');
   const priority = document.querySelector('#priority');
@@ -26,11 +27,12 @@ function addTaskHandler() {
     endDate = date.value;
   }
 
-  createTodo(title.value, endDate, priority.value);
+  createTodo(category.value, title.value, endDate, priority.value);
 
   title.value = '';
   date.value = '';
   priority.value = '';
+  category.value = '';
 
   closeDialog();
   displayToday();

@@ -5,48 +5,60 @@ import alarmIcon from '../icons/alarm.svg';
 import sync from '../icons/sync.svg';
 
 const arrayTodoList = [];
+let groupTodoList;
 
 class TodoList {
   constructor(...args) {
-    let [title, dueDate, priority] = args;
-    this._title = title;
-    this._dueDate = dueDate;
-    this._priority = priority;
-    this._checklist = false;
+    let [category, title, dueDate, priority] = args;
+    this.category = category;
+    this.title = title;
+    this.dueDate = dueDate;
+    this.priority = priority;
+    this.checklist = false;
+  }
+
+  getCategory() {
+    return this.category;
+  }
+  setCategory(category) {
+    this.category = category;
   }
 
   getTitle() {
-    return this._title;
+    return this.title;
   }
   setTitle(title) {
-    this._title = title;
+    this.title = title;
   }
 
   getDate() {
-    return this._dueDate;
+    return this.dueDate;
   }
   setDate(date) {
-    this._dueDate = date;
+    this.dueDate = date;
   }
 
   getPriority() {
-    return this._priority;
+    return this.priority;
   }
   setPriority(priority) {
-    this._priority = priority;
+    this.priority = priority;
   }
 
   getChecklist() {
-    return this._checklist;
+    return this.checklist;
   }
   setChecklist(checklist) {
-    this._checklist = checklist;
+    this.checklist = checklist;
   }
 }
 
 function createTodo(...args) {
   const todoList = new TodoList(...args);
   arrayTodoList.push(todoList);
+
+  // Group by 'category'
+  groupTodoList = Object.groupBy(arrayTodoList, ({ category }) => category);
 }
 
 function sortByPriority() {
@@ -59,29 +71,41 @@ function sortByPriority() {
 }
 
 function search(value) {
-  return arrayTodoList.filter(todoList => {
-    if (todoList.getTitle().toLowerCase().includes(value)) {
-      return todoList;
-    }
-  });
+  const searchedValue = [];
+
+  for (const category in groupTodoList) {
+    groupTodoList[category].forEach(todoList => {
+      if (todoList.getTitle().toLowerCase().includes(value)) {
+        searchedValue.push(todoList);
+      }
+    })
+
+    return searchedValue;
+  }
 }
 
 function getTodoList() {
-  return arrayTodoList;
+  console.log( groupTodoList );
+  return groupTodoList;
 }
 
 function updateTodoList(...args) {
-  const [main, todoList, index] = args;
+  const [main, todoList, index, category] = args;
+  let date = '';
+
+  if (todoList.getDate()) {
+    date = format(todoList.getDate(), 'd/MMM/y, p').toLowerCase();
+  }
 
   main.insertAdjacentHTML(
     'beforeend',
     `
-    <div class="todo__list todo__list-${index}">
+    <div class="todo__list ${category}-${index}">
       <input type="checkbox" class="list__checklist">
       <p class="list__title">${todoList.getTitle()}</p>
       <div class="list__date">
         <i class="list__date-icon">${sync}</i>
-        <p>${format(todoList.getDate(), 'd/MMM/y, p').toLowerCase()}</p>
+        <p>${date}</p>
         <i class="list__date-icon">${alarmIcon}</i>
       </div>
     </div>
@@ -90,11 +114,15 @@ function updateTodoList(...args) {
 }
 
 function removeTodoList(todoList, index) {
-  const todos = getTodoList();
   todoList.insertAdjacentHTML('beforeend', `<button class="list__remove">${trashIcon}</button>`);
   todoList.lastChild.onclick = () => {
     todoList.remove();
-    todos.splice(index, 1);
+
+    arrayTodoList.splice(index, 1);
+
+    // if (todos[category].length === 0) {
+    //   delete todos[category];
+    // }
   };
 }
 
