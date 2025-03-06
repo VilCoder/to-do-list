@@ -25,9 +25,9 @@ function displayToday() {
         const diff = formatDistance(endDate[0], startDate);
 
         if (!diff.includes('day')) {
-          updateTodoList(main, todo, index, category);
+          updateTodoList(main, todo);
 
-          const todoList = document.querySelector(`.${category}-${index}`);
+          const todoList = document.querySelectorAll('.todo__list');
           removeTodoList(todoList, index);
         }
       }

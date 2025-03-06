@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { displayProjects } from "./projects";
 
 import trashIcon from '../icons/trash.svg';
 import alarmIcon from '../icons/alarm.svg';
@@ -56,15 +57,12 @@ class TodoList {
 function createTodo(...args) {
   const todoList = new TodoList(...args);
   arrayTodoList.push(todoList);
-
-  // Group by 'category'
-  groupTodoList = Object.groupBy(arrayTodoList, ({ category }) => category);
 }
 
 function sortByPriority() {
   return [...arrayTodoList].sort((a, b) => {
-    const highestPriority = parseInt(a.getPriority().slice(1));
-    const lowerPriority = parseInt(b.getPriority().slice(1));
+    let highestPriority = parseInt(a.getPriority().slice(1));
+    let lowerPriority = parseInt(b.getPriority().slice(1));
 
     return highestPriority - lowerPriority;
   });
@@ -73,57 +71,81 @@ function sortByPriority() {
 function search(value) {
   const searchedValue = [];
 
-  for (const category in groupTodoList) {
+  for (let category in groupTodoList) {
     groupTodoList[category].forEach(todoList => {
       if (todoList.getTitle().toLowerCase().includes(value)) {
         searchedValue.push(todoList);
       }
-    })
-
-    return searchedValue;
+    });
   }
+
+  return searchedValue;
 }
 
 function getTodoList() {
-  console.log( groupTodoList );
+  // Group by 'category'
+  groupTodoList = Object.groupBy(arrayTodoList, ({ category }) => category);
   return groupTodoList;
 }
 
-function updateTodoList(...args) {
-  const [main, todoList, index, category] = args;
+function updateTodoList(main, todoList) {
   let date = '';
 
   if (todoList.getDate()) {
     date = format(todoList.getDate(), 'd/MMM/y, p').toLowerCase();
   }
 
-  main.insertAdjacentHTML(
+  const todo = document.createElement('div');
+  todo.classList.add('todo__list');
+
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.classList.add('list__checklist');
+
+  if (todoList.getPriority()) {;
+    let priority = todoList.getPriority();
+
+    switch (priority) {
+      case 'p1':
+        checkbox.classList.add('checklist__p-1');
+        break;
+  
+      case 'p2':
+        checkbox.classList.add('checklist__p-2');
+        break;
+  
+      case 'p3':
+        checkbox.classList.add('checklist__p-3');
+        break;
+    }
+  }
+
+  todo.appendChild(checkbox);
+  todo.insertAdjacentHTML(
     'beforeend',
     `
-    <div class="todo__list ${category}-${index}">
-      <input type="checkbox" class="list__checklist">
       <p class="list__title">${todoList.getTitle()}</p>
       <div class="list__date">
         <i class="list__date-icon">${sync}</i>
         <p>${date}</p>
         <i class="list__date-icon">${alarmIcon}</i>
       </div>
-    </div>
    `
   );
+
+  main.appendChild(todo);
 }
 
 function removeTodoList(todoList, index) {
-  todoList.insertAdjacentHTML('beforeend', `<button class="list__remove">${trashIcon}</button>`);
-  todoList.lastChild.onclick = () => {
-    todoList.remove();
+  todoList.forEach(todo => {
+    todo.insertAdjacentHTML('afterbegin', `<button class="list__remove">${trashIcon}</button>`);
+    todo.firstChild.onclick = () => {
+      todo.remove();
 
-    arrayTodoList.splice(index, 1);
-
-    // if (todos[category].length === 0) {
-    //   delete todos[category];
-    // }
-  };
+      arrayTodoList.splice(index, 1);
+      displayProjects();
+    };
+  });
 }
 
 export {

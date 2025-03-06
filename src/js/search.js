@@ -27,12 +27,10 @@ function displaySearch(elem) {
       }
 
       searchedValue.forEach((todo, index) => {
-        updateTodoList(main, todo, index)
+        updateTodoList(main, todo)
 
-        const todoList = document.querySelector(`.todo__list`).classList;
-        console.log(todoList);
-
-        // removeTodoList(todoList, index);
+        const todoList = document.querySelectorAll('.todo__list');
+        removeTodoList(todoList, index);
       });
     }
   });

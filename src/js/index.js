@@ -5,14 +5,14 @@ import '../css/styles.css';
 import { displayAddTask } from './addTask';
 import { displaySearch } from './search';
 import { displayNext } from './next';
-import { displayInbox } from './inbox';
+import { displayToday } from './today';
 import { closeDialog } from './handlerDialog';
 
 document.addEventListener('DOMContentLoaded', () => {
   const aside = document.querySelector('.layout__aside');
   const menuButton = document.querySelector('.layout__menu-toggle');
-  let iconBars = document.querySelector('.icon-tabler-dots-vertical');
-  let iconClose = document.querySelector('.icon-tabler-x');
+  const iconBars = document.querySelector('.icon-tabler-dots-vertical');
+  const iconClose = document.querySelector('.icon-tabler-x');
   const options = document.querySelectorAll('.aside__user-options > div');
   const asideButtons = document.querySelectorAll('.user-options__text');
   const icons = document.querySelectorAll('.icon-tabler');
@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeDialogBtn = document.querySelector('.form__close');
 
   menuButton.addEventListener('click', function () {
+    search.value = '';
     let visible = document.querySelector(".layout__aside-visible");
 
     if (!visible) {
@@ -49,23 +50,27 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   closeDialogBtn.addEventListener('click', closeDialog);
-  
+
   asideButtons.forEach((button, index) => {
     button.addEventListener('click', (e) => {
       switch (index) {
         case 0:
           displayAddTask();
           break;
+
         case 1:
           displaySearch(e.currentTarget);
           break;
-        case 2:
-          displayInbox();
-          break;
-        case 4:
+
+        case 3:
           displayNext();
           break;
+
+        default:
+          displayToday();
       }
     });
   });
+
+  displayToday();
 });
