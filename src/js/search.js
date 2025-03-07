@@ -1,6 +1,6 @@
 import sadFaceIcon from '../icons/emoticon-sad-outline.svg';
 
-import { search, updateTodoList, removeTodoList } from "./todoList"
+import { search, updateTodoList, removeTodoList, changeCheckedTodoList } from "./todoList"
 import { closeDialog } from './handlerDialog';
 
 function displaySearch(elem) {
@@ -31,6 +31,8 @@ function displaySearch(elem) {
 
         const todoList = document.querySelectorAll('.todo__list');
         removeTodoList(todoList, index);
+        
+        changeCheckedTodoList();
       });
     }
   });

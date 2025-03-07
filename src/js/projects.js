@@ -5,32 +5,29 @@ function displayProjects() {
   const userProjects = document.querySelector('.user-projects__project');
   userProjects.textContent = '';
 
-  // const colors = ['cyan', 'gold', 'indigo', 'yellow', 'green', 'brown', 'pink'];
-  // let colorIndex = 0;
-
   const todoList = getTodoList();
 
   for (let category in todoList) {
-    let color = randomColor();
-    const projectContain = document.createElement('div');
-
-    const projectSymbol = document.createElement('span');
-    projectSymbol.classList.add('project__symbol');
-    projectSymbol.textContent = '#';
-    projectSymbol.style.setProperty("--symbol-color", color);
-
-    const projectTitle = document.createElement('button');
-    projectTitle.classList.add('project__title');
-    projectTitle.style.setProperty("--after-bg-color", color);
-
-    // Capture and display categories
-    projectTitle.textContent = todoList[category][0].getCategory();
-
-    // colorIndex++;
-
-    projectContain.appendChild(projectSymbol);
-    projectContain.appendChild(projectTitle);
-    userProjects.appendChild(projectContain);
+    if (category) {
+      let color = randomColor();
+      const projectContain = document.createElement('div');
+  
+      const projectSymbol = document.createElement('span');
+      projectSymbol.classList.add('project__symbol');
+      projectSymbol.textContent = '#';
+      projectSymbol.style.setProperty("--symbol-color", color);
+  
+      const projectTitle = document.createElement('button');
+      projectTitle.classList.add('project__title');
+      projectTitle.style.setProperty("--after-bg-color", color);
+  
+      // Capture and display categories
+      projectTitle.textContent = todoList[category][0].getCategory();
+  
+      projectContain.appendChild(projectSymbol);
+      projectContain.appendChild(projectTitle);
+      userProjects.appendChild(projectContain);
+    }
   }
 
   handlerClickProject();

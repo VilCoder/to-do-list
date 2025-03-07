@@ -3,7 +3,6 @@ import { displayProjects } from "./projects";
 
 import trashIcon from '../icons/trash.svg';
 import alarmIcon from '../icons/alarm.svg';
-import sync from '../icons/sync.svg';
 
 const arrayTodoList = [];
 let groupTodoList;
@@ -100,6 +99,7 @@ function updateTodoList(main, todoList) {
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
+  checkbox.checked = todoList.getChecklist();
   checkbox.classList.add('list__checklist');
 
   if (todoList.getPriority()) {;
@@ -126,7 +126,6 @@ function updateTodoList(main, todoList) {
     `
       <p class="list__title">${todoList.getTitle()}</p>
       <div class="list__date">
-        <i class="list__date-icon">${sync}</i>
         <p>${date}</p>
         <i class="list__date-icon">${alarmIcon}</i>
       </div>
@@ -148,6 +147,16 @@ function removeTodoList(todoList, index) {
   });
 }
 
+function changeCheckedTodoList() {
+  document.querySelectorAll('.list__checklist').forEach((checkbox, index) => {
+    checkbox.addEventListener('change', function () {
+      const todoList = arrayTodoList[index];
+      todoList.setChecklist(this.checked);
+      console.log( arrayTodoList );
+    });
+  });
+}
+
 export {
   createTodo,
   sortByPriority,
@@ -155,4 +164,5 @@ export {
   getTodoList,
   updateTodoList,
   removeTodoList,
+  changeCheckedTodoList,
 }

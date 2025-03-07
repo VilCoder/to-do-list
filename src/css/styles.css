@@ -386,7 +386,7 @@ svg {
 }
 
 .checklist__p-2[type="checkbox"]::before{
-  box-shadow: inset 10px 10px #f5c542;
+  box-shadow: inset 10px 10px #fff;
 }
 
 .checklist__p-3[type="checkbox"] {
