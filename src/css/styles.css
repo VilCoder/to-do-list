@@ -420,6 +420,17 @@ svg {
   margin-left: 0.5rem;
 }
 
+.list__edit {
+  position: absolute;
+  top: 0.3rem;
+  right: 2.3rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: transparent;
+  border: 0;
+  fill: var(--main-color);
+}
+
 .list__remove {
   position: absolute;
   top: 0.3rem;

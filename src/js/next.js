@@ -1,4 +1,4 @@
-import { getTodoList, updateTodoList, removeTodoList, changeCheckedTodoList } from "./todoList";
+import { getTodoList, updateTodoList, editTodoList, removeTodoList, changeCheckedTodoList } from "./todoList";
 import { closeDialog } from './handlerDialog';
 
 
@@ -14,7 +14,7 @@ function displayNext() {
 
       const todoList = document.querySelectorAll('.todo__list');
       removeTodoList(todoList, index);
-
+      editTodoList(todoList, index);
       changeCheckedTodoList();
     });
   }

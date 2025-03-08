@@ -9,6 +9,7 @@ function displayAddTask() {
   openDialog();
 
   const addTaskButton = document.querySelector('.form__button');
+  addTaskButton.textContent = 'Add Task'
   addTaskButton.removeEventListener('click', addTaskHandler);
   addTaskButton.addEventListener('click', addTaskHandler);
 }
@@ -22,9 +23,8 @@ function addTaskHandler() {
 
   try {
     const formattedDated = new Date(date.value);
-    endDate = format(formattedDated, 'y-M-d p');
+    endDate = format(formattedDated, 'd/MMM/y, p').toLowerCase();
   } catch (error) {
-    console.log(error.message);
     endDate = date.value;
   }
 
