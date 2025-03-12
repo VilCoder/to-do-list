@@ -4,16 +4,14 @@ import { displayProjects } from "./projects";
 import { openDialog, closeDialog } from './handlerDialog';
 import { displayToday } from './today';
 import { displayNext } from './next';
-import { displaySearch } from './search';
 
 import trashIcon from '../icons/trash.svg';
 import alarmIcon from '../icons/alarm.svg';
 import editIcon from '../icons/square-edit-outline.svg';
 
 const arrayTodoList = [];
-let groupTodoList;
 
-class TodoList {
+class Task {
   constructor(...args) {
     let [category, title, dueDate, priority] = args;
     this.category = category;
@@ -23,45 +21,60 @@ class TodoList {
     this.checklist = false;
   }
 
+  static fromJSON(obj) {
+    const task = new Task(obj.category, obj.title, obj.dueDate, obj.priority);
+    task.checklist = obj.checklist;
+    return task;
+  }
+
   getCategory() {
     return this.category;
   }
-  setCategory(category) {
-    this.category = category;
+  setCategory(value) {
+    this.category = value;
   }
 
   getTitle() {
     return this.title;
   }
-  setTitle(title) {
-    this.title = title;
+  setTitle(value) {
+    this.title = value;
   }
 
   getDate() {
     return this.dueDate;
   }
-  setDate(date) {
-    this.dueDate = date;
+  setDate(value) {
+    this.dueDate = value;
   }
 
   getPriority() {
     return this.priority;
   }
-  setPriority(priority) {
-    this.priority = priority;
+  setPriority(value) {
+    this.priority = value;
   }
 
   getChecklist() {
     return this.checklist;
   }
-  setChecklist(checklist) {
-    this.checklist = checklist;
+  setChecklist(value) {
+    this.checklist = value;
   }
 }
 
-function createTodo(...args) {
-  const todoList = new TodoList(...args);
-  arrayTodoList.push(todoList);
+function createTask(...args) {
+  const task = new Task(...args);
+  const storedTasks = getStoredTodoListData();
+  const category = task.getCategory();
+
+  if (!storedTasks[category]) {
+    storedTasks[category] = [];
+  }
+
+  console.log(task);
+  storedTasks[category].push(task); // Agregar nueva tarea a la categoría existente
+  setStoredTodoListData(Object.values(storedTasks).flat());
 }
 
 function sortByPriority() {
@@ -73,13 +86,14 @@ function sortByPriority() {
   });
 }
 
-function search(value) {
+function searchTodoList(value) {
   const searchedValue = [];
+  const tasks = getStoredTodoListData();
 
-  for (let category in groupTodoList) {
-    groupTodoList[category].forEach(todoList => {
-      if (todoList.getTitle().toLowerCase().includes(value)) {
-        searchedValue.push(todoList);
+  for (let category in tasks) {
+    tasks[category].forEach(task => {
+      if (task.getTitle().toLowerCase().includes(value)) {
+        searchedValue.push(task);
       }
     });
   }
@@ -87,23 +101,21 @@ function search(value) {
   return searchedValue;
 }
 
-function getTodoList() {
-  // Group by 'category'
-  groupTodoList = Object.groupBy(arrayTodoList, ({ category }) => category);
-  return groupTodoList;
-}
-
-function updateTodoList(main, todoList) {
+function updateTodoList(main, task) {
   const todo = document.createElement('div');
   todo.classList.add('todo__list');
+  todo.dataset.date = task.getDate();
+  todo.dataset.category = task.getCategory();
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
-  checkbox.checked = todoList.getChecklist();
+  checkbox.checked = task.getChecklist();
   checkbox.classList.add('list__checklist');
+  checkbox.dataset.category = task.getCategory();
+  checkbox.dataset.date = task.getDate();
 
-  if (todoList.getPriority()) {
-    let priority = todoList.getPriority();
+  if (task.getPriority()) {
+    let priority = task.getPriority();
 
     switch (priority) {
       case 'p1':
@@ -125,9 +137,9 @@ function updateTodoList(main, todoList) {
   todo.insertAdjacentHTML(
     'beforeend',
     `
-      <p class="list__title">${todoList.getTitle()}</p>
+      <p class="list__title">${task.getTitle()}</p>
       <div class="list__date">
-        <p>${todoList.getDate()}</p>
+        <p>${task.getDate()}</p>
         <i class="list__date-icon">${alarmIcon}</i>
       </div>
    `
@@ -136,7 +148,10 @@ function updateTodoList(main, todoList) {
   main.appendChild(todo);
 }
 
-function editTodoList(todoList, index) {
+function editTodoList() {
+  const todoList = document.querySelectorAll('.todo__list');
+  let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
+
   todoList.forEach(todo => {
     const existingButton = todo.querySelector('.list__edit');
     if (existingButton) {
@@ -146,52 +161,59 @@ function editTodoList(todoList, index) {
     const editButton = document.createElement('button');
     editButton.classList.add('list__edit');
     editButton.innerHTML = editIcon;
-
     editButton.onclick = () => {
-      const editTodoList = arrayTodoList[index];
+      const tasks = getStoredTodoListData();
+      let categoryTask = todo.dataset.category;
+      let dateTask = todo.dataset.date;
 
-      openDialog();
+      if (tasks[categoryTask]) {
+        const todoList = tasks[categoryTask].find(task => task.getDate() === dateTask);
 
-      const category = document.querySelector('#category');
-      category.value = editTodoList.getCategory();
+        if (todoList) {
+          openDialog();
 
-      const title = document.querySelector('#title');
-      title.value = editTodoList.getTitle();
+          const category = document.querySelector('#category');
+          category.value = todoList.getCategory();
 
-      const date = document.querySelector('#date');
+          const title = document.querySelector('#title');
+          title.value = todoList.getTitle();
 
-      const priority = document.querySelector('#priority');
-      priority.value = editTodoList.getPriority();
+          const date = document.querySelector('#date');
 
-      const formButton = document.querySelector('.form__button');
-      // Before adding a new listener, delete the previous ones
-      const newButton = formButton.cloneNode(true);
-      newButton.textContent = 'Ok';
-      formButton.replaceWith(newButton); // Delete previous events
+          const priority = document.querySelector('#priority');
+          priority.value = todoList.getPriority();
 
-      newButton.addEventListener('click', () => {
-        let endDate = date.value;
+          const formButton = document.querySelector('.form__button');
 
-        if (endDate) {
-          const formattedDated = new Date(endDate);
-          endDate = format(formattedDated, 'd/MMM/y, p').toLowerCase();
+          // Before adding a new listener, delete the previous ones
+          const newButton = formButton.cloneNode(true);
+          newButton.textContent = 'Ok';
+          formButton.replaceWith(newButton); // Delete previous events
+
+          newButton.addEventListener('click', () => {
+            let endDate = date.value;
+
+            if (endDate) {
+              const formattedDated = new Date(endDate);
+              endDate = format(formattedDated, 'd/MMM/y, p').toLowerCase();
+            }
+
+            todoList.setCategory(category.value);
+            todoList.setTitle(title.value);
+            todoList.setDate(endDate);
+            todoList.setPriority(priority.value);
+
+            setStoredTodoListData(Object.values(tasks).flat());
+            closeDialog();
+
+            if (mainTitle === 'today') {
+              displayToday();
+            }else {
+              displayNext();
+            }
+          }, { once: true }); // Elimina automaticamente el addEventListener despues de ejecutarse
         }
-
-        editTodoList.setCategory(category.value);
-        editTodoList.setTitle(title.value);
-        editTodoList.setDate(endDate);
-        editTodoList.setPriority(priority.value);
-
-        title.value = '';
-        date.value = '';
-        priority.value = '';
-        category.value = '';
-
-        closeDialog();
-        displayToday();
-        displayNext();
-        displaySearch();
-      });
+      }
     };
 
     // Add edit button to the top of the to-do list
@@ -200,32 +222,84 @@ function editTodoList(todoList, index) {
 }
 
 
-function removeTodoList(todoList, index) {
+function removeTodoList() {
+  const todoList = document.querySelectorAll('.todo__list');
   todoList.forEach(todo => {
     todo.insertAdjacentHTML('beforeend', `<button class="list__remove">${trashIcon}</button>`);
     todo.lastChild.onclick = () => {
       todo.remove();
 
-      arrayTodoList.splice(index, 1);
+      const tasks = getStoredTodoListData();
+      let category = todo.dataset.category;
+      let date = todo.dataset.date;
+
+      if (tasks[category]) {
+        tasks[category] = tasks[category].filter(task => task.getDate() !== date);
+
+        if (tasks[category].length === 0) {
+          delete tasks[category];
+        }
+
+        setStoredTodoListData(Object.values(tasks).flat());
+      }
+
       displayProjects();
     };
   });
 }
 
 function changeCheckedTodoList() {
-  document.querySelectorAll('.list__checklist').forEach((checkbox, index) => {
+  document.querySelectorAll('.list__checklist').forEach(checkbox => {
     checkbox.addEventListener('change', function () {
-      const todoList = arrayTodoList[index];
-      todoList.setChecklist(this.checked);
+      const category = this.dataset.category;
+      const date = this.dataset.date;
+      const tasks = getStoredTodoListData();
+
+      if (tasks[category]) {
+        const todoList = tasks[category].find(task => task.getDate() === date);
+
+        if (todoList) {
+          todoList.setChecklist(this.checked);
+
+          setStoredTodoListData(Object.values(tasks).flat());
+        }
+      }
     });
   });
 }
 
+
+function getStoredTodoListData() {
+  const storedTasksData = localStorage.getItem('todoList');
+
+  if (!storedTasksData) {
+    console.log('Todo list data not found in local storage');
+    return {};
+  }
+
+  const tasksData = JSON.parse(storedTasksData);
+
+  // Convertir cada objeto en una instancia de TodoList
+  for (let category in tasksData) {
+    tasksData[category] = tasksData[category].map(Task.fromJSON);
+  }
+
+  return tasksData;
+}
+
+function setStoredTodoListData(obj) {
+  const tasks = Object.groupBy(obj, ({ category }) => category);
+  
+  if (Object.keys(tasks).length > 0) {
+    localStorage.setItem('todoList', JSON.stringify(tasks));
+  }
+}
+
 export {
-  createTodo,
+  createTask,
   sortByPriority,
-  search,
-  getTodoList,
+  searchTodoList,
+  getStoredTodoListData,
   updateTodoList,
   editTodoList,
   removeTodoList,

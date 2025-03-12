@@ -1,63 +1,62 @@
-import { updateTodoList, getTodoList, removeTodoList } from "./todoList";
+import { updateTodoList, getStoredTodoListData, removeTodoList, editTodoList, changeCheckedTodoList } from "./todoList";
 import { closeDialog } from "./handlerDialog";
 
 function displayProjects() {
   const userProjects = document.querySelector('.user-projects__project');
   userProjects.textContent = '';
 
-  const todoList = getTodoList();
+  const tasks = getStoredTodoListData();
 
-  for (let category in todoList) {
+  for (let category in tasks) {
     if (category) {
       let color = randomColor();
       const projectContain = document.createElement('div');
-  
+
       const projectSymbol = document.createElement('span');
       projectSymbol.classList.add('project__symbol');
       projectSymbol.textContent = '#';
       projectSymbol.style.setProperty("--symbol-color", color);
-  
+
       const projectTitle = document.createElement('button');
       projectTitle.classList.add('project__title');
       projectTitle.style.setProperty("--after-bg-color", color);
-  
-      // Capture and display categories
-      projectTitle.textContent = todoList[category][0].getCategory();
-  
+      projectTitle.dataset.title = category;
+      projectTitle.textContent = category;
+
       projectContain.appendChild(projectSymbol);
       projectContain.appendChild(projectTitle);
       userProjects.appendChild(projectContain);
     }
   }
 
-  handlerClickProject();
+  handlerClickProject(tasks);
 }
 
-function handlerClickProject() {
-  const todoList = getTodoList();
+function handlerClickProject(tasks) {
   const projectsTitle = document.querySelectorAll('.project__title');
 
   if (projectsTitle) {
     projectsTitle.forEach(title => {
-      title.onclick = () => {
+      title.addEventListener('click', function () {
+        let category = this.dataset.title;
+
         const main = document.querySelector('.layout__main');
         main.textContent = '';
+        main.insertAdjacentHTML( // Add DOM elements to the end of main
+          'beforeend',
+          `
+          <h3 class="main__title">${category}</h3>
+          `
+        );
 
-        let titleValue = title.textContent;
-
-        for (let category in todoList) {
-          if (category === titleValue) {
-            todoList[category].forEach((todo, index) => {
-              updateTodoList(main, todo);
-
-              const todoList = document.querySelectorAll('.todo__list');
-              removeTodoList(todoList, index);
-
-              closeDialog();
-            })
-          }
-        }
-      }
+        tasks[category].forEach((task) => {
+          updateTodoList(main, task);
+          removeTodoList();
+          editTodoList();
+          changeCheckedTodoList();
+          closeDialog();
+        });
+      });
     });
   }
 }

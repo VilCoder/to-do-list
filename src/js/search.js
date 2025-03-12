@@ -1,16 +1,27 @@
 import sadFaceIcon from '../icons/emoticon-sad-outline.svg';
 
-import { search, updateTodoList, editTodoList, removeTodoList, changeCheckedTodoList } from "./todoList"
+import { searchTodoList, updateTodoList, editTodoList, removeTodoList, changeCheckedTodoList } from "./todoList"
 import { closeDialog } from './handlerDialog';
 
-function displaySearch(elem) {
-  document.querySelector('#search').addEventListener('keydown', (e) => {
+function displaySearch() {
+  const searchButton = document.querySelector('#search');
+  // Before adding a new listener, delete the previous ones
+  const newSearchButton = searchButton.cloneNode(true);
+  searchButton.replaceWith(newSearchButton); // Delete previous events
+
+  newSearchButton.addEventListener('keydown', (e) => {
     if (e.key === "Enter") {
+      let searchValue = newSearchButton.value.toLowerCase();
+      const searchedValue = searchTodoList(searchValue);
+
       const main = document.querySelector('.layout__main');
       main.textContent = '';
-
-      let searchValue = elem.value.toLowerCase();
-      const searchedValue = search(searchValue);
+      main.insertAdjacentHTML( // Add DOM elements to the end of main
+        'beforeend',
+        `
+        <h3 class="main__title">Search result for '${searchValue}'</h3>
+        `
+      );
 
       closeDialog();
 
@@ -26,12 +37,10 @@ function displaySearch(elem) {
         return;
       }
 
-      searchedValue.forEach((todo, index) => {
-        updateTodoList(main, todo)
-
-        const todoList = document.querySelectorAll('.todo__list');
-        removeTodoList(todoList, index);
-        editTodoList(todoList, index)
+      searchedValue.forEach((task) => {
+        updateTodoList(main, task)
+        removeTodoList();
+        editTodoList();
         changeCheckedTodoList();
       });
     }

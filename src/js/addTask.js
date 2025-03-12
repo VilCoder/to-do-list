@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-import { createTodo } from './todoList';
+import { createTask } from './todoList';
 import { openDialog, closeDialog } from './handlerDialog';
 import { displayToday } from './today';
 import { displayProjects } from "./projects";
@@ -9,7 +9,8 @@ function displayAddTask() {
   openDialog();
 
   const addTaskButton = document.querySelector('.form__button');
-  addTaskButton.textContent = 'Add Task'
+  addTaskButton.textContent = 'Add Task';
+
   addTaskButton.removeEventListener('click', addTaskHandler);
   addTaskButton.addEventListener('click', addTaskHandler);
 }
@@ -28,13 +29,7 @@ function addTaskHandler() {
     endDate = date.value;
   }
 
-  createTodo(category.value, title.value, endDate, priority.value);
-
-  title.value = '';
-  date.value = '';
-  priority.value = '';
-  category.value = '';
-
+  createTask(category.value, title.value, endDate, priority.value);
   closeDialog();
   displayProjects();
   displayToday();

@@ -3,7 +3,9 @@
   --background-color: #ccc;
   --primary-color: #fff;
   --icon-primary-color: #cbc9c7;
-  --icon-second-color: #dd4c3f;
+  --danger-color: #dd4c3f;
+  --warning-color: #f5c542;
+  --info-color: #4986e5;
   --layout-bg: #fff;
   --aside-color: #fcfaf8;
   --placeholder-color: #aaa;
@@ -140,7 +142,7 @@ svg {
 }
 
 .icon-tabler-circle-plus {
-  color: var(--icon-second-color);
+  color: var(--danger-color);
 }
 
 .user-options__text {
@@ -153,16 +155,16 @@ svg {
 }
 
 .task__text {
-  color: var(--icon-second-color);
+  color: var(--danger-color);
 }
 
 .option__active {
   background-color: #fff0e5;
-  color: var(--icon-second-color);
+  color: var(--danger-color);
 }
 
 .options__icon {
-  color: var(--icon-second-color);
+  color: var(--danger-color);
 }
 
 .search__text:focus {
@@ -170,15 +172,15 @@ svg {
 }
 
 .search__text:focus::placeholder {
-  color: var(--icon-second-color);
+  color: var(--danger-color);
 }
 
 .user-options__icon {
-  color: var(--icon-second-color);
+  color: var(--danger-color);
 }
 
 .icon__active {
-  color: var(--icon-second-color);
+  color: var(--danger-color);
 }
 
 .user-projects__project {
@@ -321,7 +323,7 @@ svg {
   position: relative;
   font-weight: bold;
   padding: 0.3rem 2rem;
-  background-color: #f5c542;
+  background-color: var(--warning-color);
   border: 0;
   border-radius: 5px;
   color: var(--primary-color);
@@ -374,27 +376,27 @@ svg {
 }
 
 .checklist__p-1[type="checkbox"] {
-  border: 1px solid var(--icon-second-color);
+  border: 1px solid var(--danger-color);
 }
 
 .checklist__p-1[type="checkbox"]::before{
-  box-shadow: inset 10px 10px var(--icon-second-color);
+  box-shadow: inset 10px 10px var(--danger-color);
 }
 
 .checklist__p-2[type="checkbox"] {
-  border: 1px solid #f5c542;
+  border: 1px solid var(--warning-color);
 }
 
 .checklist__p-2[type="checkbox"]::before{
-  box-shadow: inset 10px 10px #fff;
+  box-shadow: inset 10px 10px var(--warning-color);
 }
 
 .checklist__p-3[type="checkbox"] {
-  border: 1px solid #4986e5;
+  border: 1px solid var(--info-color);
 }
 
 .checklist__p-3[type="checkbox"]::before{
-  box-shadow: inset 10px 10px #4986e5;
+  box-shadow: inset 10px 10px var(--info-color);
 }
 
 .list__title {
@@ -440,7 +442,7 @@ svg {
   background-color: transparent;
   border: 0;
   cursor: pointer;
-  fill: var(--icon-second-color);
+  fill: var(--danger-color);
 }
 
 .list__notfound {

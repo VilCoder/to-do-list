@@ -4,6 +4,11 @@ function openDialog() {
 }
 
 function closeDialog() {
+  title.value = '';
+  date.value = '';
+  priority.value = '';
+  category.value = '';
+  search.value = '';
   dialog.classList.remove("dialog__visible");
 
   setTimeout(() => {

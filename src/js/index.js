@@ -7,6 +7,7 @@ import { displaySearch } from './search';
 import { displayNext } from './next';
 import { displayToday } from './today';
 import { closeDialog } from './handlerDialog';
+import { displayProjects } from './projects';
 
 document.addEventListener('DOMContentLoaded', () => {
   const aside = document.querySelector('.layout__aside');
@@ -20,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeDialogBtn = document.querySelector('.form__close');
 
   menuButton.addEventListener('click', function () {
-    search.value = '';
     let visible = document.querySelector(".layout__aside-visible");
 
     if (!visible) {
@@ -52,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
   closeDialogBtn.addEventListener('click', closeDialog);
 
   asideButtons.forEach((button, index) => {
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', () => {
       switch (index) {
         case 0:
           displayAddTask();
           break;
 
         case 1:
-          displaySearch(e.currentTarget);
+          displaySearch();
           break;
 
         case 3:
@@ -73,4 +73,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   displayToday();
+  displayProjects();
 });
