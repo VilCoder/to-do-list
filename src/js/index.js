@@ -3,13 +3,17 @@ import '../css/styles.css';
 // import '../css/responsive.css';
 
 import { displayAddTask } from './addTask';
-import { displaySearch } from './search';
+import { handlerEnterSearch } from './search';
 import { displayNext } from './next';
 import { displayToday } from './today';
 import { closeDialog } from './handlerDialog';
-import { displayProjects } from './projects';
+import { displayNameProject } from './projects';
+import { displayComplete } from './complete';
 
 document.addEventListener('DOMContentLoaded', () => {
+  displayToday();
+  displayNameProject();
+
   const aside = document.querySelector('.layout__aside');
   const menuButton = document.querySelector('.layout__menu-toggle');
   const iconBars = document.querySelector('.icon-tabler-dots-vertical');
@@ -19,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const icons = document.querySelectorAll('.icon-tabler');
   const dialog = document.querySelector('#dialog');
   const closeDialogBtn = document.querySelector('.form__close');
+  const projectContain = document.querySelectorAll('.project__content');
 
   menuButton.addEventListener('click', function () {
     let visible = document.querySelector(".layout__aside-visible");
@@ -38,9 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     option.addEventListener('click', () => {
       options.forEach(option => option.classList.remove('option__active'));
       icons.forEach(icon => icon.classList.remove('icon__active'));
-
-      icons[index + 1].classList.add('icon__active');
+      projectContain.forEach(icon => icon.classList.remove('option__active'));
+      
       option.classList.add('option__active');
+      icons[index + 1].classList.add('icon__active');
     });
   });
 
@@ -59,19 +65,20 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
 
         case 1:
-          displaySearch();
+          handlerEnterSearch();
           break;
 
         case 3:
           displayNext();
           break;
 
+        case 4:
+          displayComplete();
+          break;
+          
         default:
           displayToday();
       }
     });
   });
-
-  displayToday();
-  displayProjects();
 });

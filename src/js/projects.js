@@ -1,7 +1,58 @@
 import { updateTodoList, getStoredTodoListData, removeTodoList, editTodoList, changeCheckedTodoList } from "./todoList";
 import { closeDialog } from "./handlerDialog";
 
-function displayProjects() {
+function random(min, max) {
+  let num = Math.floor(Math.random() * (max - min)) + min;
+  return num
+}
+
+function randomColor() {
+  return `rgb(${random(0, 255)}  ${random(0, 255)} ${random(0, 255)})`;
+}
+
+function displayContentProject(category) {
+  const tasks = getStoredTodoListData();
+  const main = document.querySelector('.layout__main');
+  main.textContent = '';
+  main.insertAdjacentHTML( // Add DOM elements to the end of main
+    'beforeend',
+    `
+    <h3 class="main__title">${category}</h3>
+    `
+  );
+
+  tasks[category].forEach((task) => {
+    updateTodoList(main, task);
+    removeTodoList();
+    editTodoList(category);
+    changeCheckedTodoList();
+    closeDialog();
+  });
+}
+
+function handlerClickProject() {
+  const projectContain = document.querySelectorAll('.project__content');
+  const projectsTitle = document.querySelectorAll('.project__title');
+  const options = document.querySelectorAll('.aside__user-options > div');
+  const icons = document.querySelectorAll('.icon-tabler');
+
+  if (projectsTitle) {
+    projectsTitle.forEach((title, index) => {
+      title.addEventListener('click', function () {
+        options.forEach(option => option.classList.remove('option__active'));
+        icons.forEach(icon => icon.classList.remove('icon__active'));
+        projectContain.forEach(icon => icon.classList.remove('icon__active'));
+
+        projectContain[index].classList.add('option__active');
+
+        let category = this.dataset.title;
+        displayContentProject(category)
+      });
+    });
+  }
+}
+
+function displayNameProject() {
   const userProjects = document.querySelector('.user-projects__project');
   userProjects.textContent = '';
 
@@ -11,6 +62,7 @@ function displayProjects() {
     if (category) {
       let color = randomColor();
       const projectContain = document.createElement('div');
+      projectContain.classList.add('project__content');
 
       const projectSymbol = document.createElement('span');
       projectSymbol.classList.add('project__symbol');
@@ -29,47 +81,10 @@ function displayProjects() {
     }
   }
 
-  handlerClickProject(tasks);
-}
-
-function handlerClickProject(tasks) {
-  const projectsTitle = document.querySelectorAll('.project__title');
-
-  if (projectsTitle) {
-    projectsTitle.forEach(title => {
-      title.addEventListener('click', function () {
-        let category = this.dataset.title;
-
-        const main = document.querySelector('.layout__main');
-        main.textContent = '';
-        main.insertAdjacentHTML( // Add DOM elements to the end of main
-          'beforeend',
-          `
-          <h3 class="main__title">${category}</h3>
-          `
-        );
-
-        tasks[category].forEach((task) => {
-          updateTodoList(main, task);
-          removeTodoList();
-          editTodoList();
-          changeCheckedTodoList();
-          closeDialog();
-        });
-      });
-    });
-  }
-}
-
-function random(min, max) {
-  let num = Math.floor(Math.random() * (max - min)) + min;
-  return num
-}
-
-function randomColor() {
-  return `rgb(${random(0, 255)}  ${random(0, 255)} ${random(0, 255)})`;
+  handlerClickProject();
 }
 
 export {
-  displayProjects,
+  displayContentProject,
+  displayNameProject,
 };

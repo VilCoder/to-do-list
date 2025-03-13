@@ -16,7 +16,7 @@ function displayToday() {
 
   const tasks = getStoredTodoListData();
 
-  for (const category in tasks) {
+  for (let category in tasks) {
     tasks[category].forEach((task) => {
       let startDate = new Date();
       startDate = format(startDate, 'y-M-d');

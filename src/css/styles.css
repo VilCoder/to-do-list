@@ -186,13 +186,13 @@ svg {
 .user-projects__project {
   display: block;
   margin-top: 1rem;
-  margin-left: 0.8rem;
 }
-
 
 .project__symbol{
   font-size: 1.8rem;
   font-weight: 500;
+  margin-left: 0.6rem;
+  margin-right: 1.5rem;
   color: var(--symbol-color);
 }
 
@@ -200,7 +200,6 @@ svg {
   position: relative;
   bottom: 0.2rem;
   display: inline-block;
-  margin-left: 1rem;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -326,8 +325,15 @@ svg {
   background-color: var(--warning-color);
   border: 0;
   border-radius: 5px;
+  box-shadow: 0 10px 10px -8px rgb(0 0 0 / 0.42);
   color: var(--primary-color);
   cursor: pointer;
+  transition: all 300ms linear;
+}
+
+.form__button:hover {
+  box-shadow: 0 0 0 0;
+  transform: translateY(4px);
 }
 
 /* ====================== MAIN ======================*/
@@ -348,6 +354,7 @@ svg {
   column-gap: 0.5rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--icon-primary-color);
+  transition: all 1s linear;
 }
 
 .list__checklist[type="checkbox"] {

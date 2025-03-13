@@ -1,15 +1,14 @@
 import { format } from 'date-fns';
 
-import { displayProjects } from "./projects";
+import { displayContentProject, displayNameProject } from "./projects";
 import { openDialog, closeDialog } from './handlerDialog';
 import { displayToday } from './today';
 import { displayNext } from './next';
+import { displaySearch } from './search';
 
 import trashIcon from '../icons/trash.svg';
 import alarmIcon from '../icons/alarm.svg';
 import editIcon from '../icons/square-edit-outline.svg';
-
-const arrayTodoList = [];
 
 class Task {
   constructor(...args) {
@@ -72,9 +71,8 @@ function createTask(...args) {
     storedTasks[category] = [];
   }
 
-  console.log(task);
-  storedTasks[category].push(task); // Agregar nueva tarea a la categoría existente
-  setStoredTodoListData(Object.values(storedTasks).flat());
+  storedTasks[category].push(task);
+  setStoredTodoListData(Object.values(storedTasks).flat()); // Flattens nested arrays
 }
 
 function sortByPriority() {
@@ -101,7 +99,7 @@ function searchTodoList(value) {
   return searchedValue;
 }
 
-function updateTodoList(main, task) {
+function updateTodoList(main, task, hidden=1) {
   const todo = document.createElement('div');
   todo.classList.add('todo__list');
   todo.dataset.date = task.getDate();
@@ -110,6 +108,7 @@ function updateTodoList(main, task) {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.checked = task.getChecklist();
+  checkbox.disabled = task.getChecklist();
   checkbox.classList.add('list__checklist');
   checkbox.dataset.category = task.getCategory();
   checkbox.dataset.date = task.getDate();
@@ -132,6 +131,14 @@ function updateTodoList(main, task) {
     }
   }
 
+  if (checkbox.checked) {
+    if(hidden) {
+      todo.style.display = 'none';
+    }
+
+    todo.style.opacity = 0.5;
+  }
+
   todo.appendChild(checkbox);
   // Add DOM elements to the end of the to-do list
   todo.insertAdjacentHTML(
@@ -148,7 +155,7 @@ function updateTodoList(main, task) {
   main.appendChild(todo);
 }
 
-function editTodoList() {
+function editTodoList(value = '') {
   const todoList = document.querySelectorAll('.todo__list');
   let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
 
@@ -203,15 +210,19 @@ function editTodoList() {
             todoList.setDate(endDate);
             todoList.setPriority(priority.value);
 
-            setStoredTodoListData(Object.values(tasks).flat());
+            setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
             closeDialog();
 
             if (mainTitle === 'today') {
               displayToday();
-            }else {
+            } else if (mainTitle === 'next') {
               displayNext();
+            } else if (mainTitle === value) {
+              displayContentProject(value);
+            } else {
+              displaySearch(value);
             }
-          }, { once: true }); // Elimina automaticamente el addEventListener despues de ejecutarse
+          }, { once: true }); // Automatically removes the addEventListener after it runs
         }
       }
     };
@@ -240,10 +251,10 @@ function removeTodoList() {
           delete tasks[category];
         }
 
-        setStoredTodoListData(Object.values(tasks).flat());
+        setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
       }
 
-      displayProjects();
+      displayNameProject();
     };
   });
 }
@@ -252,22 +263,32 @@ function changeCheckedTodoList() {
   document.querySelectorAll('.list__checklist').forEach(checkbox => {
     checkbox.addEventListener('change', function () {
       const category = this.dataset.category;
-      const date = this.dataset.date;
+      const checkboxDate = this.dataset.date;
       const tasks = getStoredTodoListData();
+      let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
 
       if (tasks[category]) {
-        const todoList = tasks[category].find(task => task.getDate() === date);
+        const todoList = tasks[category].find(task => task.getDate() === checkboxDate);
 
         if (todoList) {
           todoList.setChecklist(this.checked);
 
-          setStoredTodoListData(Object.values(tasks).flat());
+          setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
+
+          if (mainTitle === 'today') {
+            displayToday();
+          } else if (mainTitle === 'next') {
+            displayNext();
+          } else if (mainTitle === value) {
+            displayContentProject(value);
+          } else {
+            displaySearch(value);
+          }
         }
       }
     });
   });
 }
-
 
 function getStoredTodoListData() {
   const storedTasksData = localStorage.getItem('todoList');
@@ -279,7 +300,7 @@ function getStoredTodoListData() {
 
   const tasksData = JSON.parse(storedTasksData);
 
-  // Convertir cada objeto en una instancia de TodoList
+  // Converts each object into an instance of Task
   for (let category in tasksData) {
     tasksData[category] = tasksData[category].map(Task.fromJSON);
   }
@@ -289,7 +310,7 @@ function getStoredTodoListData() {
 
 function setStoredTodoListData(obj) {
   const tasks = Object.groupBy(obj, ({ category }) => category);
-  
+
   if (Object.keys(tasks).length > 0) {
     localStorage.setItem('todoList', JSON.stringify(tasks));
   }

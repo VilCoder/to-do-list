@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { createTask } from './todoList';
 import { openDialog, closeDialog } from './handlerDialog';
 import { displayToday } from './today';
-import { displayProjects } from "./projects";
+import { displayNameProject } from "./projects";
 
 function displayAddTask() {
   openDialog();
@@ -31,7 +31,7 @@ function addTaskHandler() {
 
   createTask(category.value, title.value, endDate, priority.value);
   closeDialog();
-  displayProjects();
+  displayNameProject();
   displayToday();
 }
 
