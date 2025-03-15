@@ -1,77 +1,52 @@
-/* ==================================== TABLET ==================================== */
-@media (min-width: 768px) {
-    /* ==================================== HOME PAGE ==================================== */
-    .content__info {
-        width: 80%;
+/* ========================== TABLET MINI ========================== */
+@media (min-width: 520px) {
+    .layout__menu-toggle {
+        right: 2.5rem;
     }
 
-    .info__title {
-        font-size: 5rem;
-    }
-
-    .info__text {
-        font-size: 2.5rem;
-    }
-
-
-    /* ==================================== MENU PAGE ==================================== */
-    .container__dishes {
-        margin-top: 0;
+    #date, #priority, #category {
+        width: 15rem;
     }
 }
 
+/* ========================== TABLET ========================== */
+@media (min-width: 768px) {
+    .layout__menu-toggle {
+        right: 3.5rem;
+    }
 
+    #date, #priority, #category {
+        width: fit-content;
+    }
+}
 
-/* ==================================== DESKTOP ==================================== */
+/* ========================== DESKTOP ========================== */
 @media (min-width: 1064px) {
-    .menu__toggle {
+    .layout {
+        position: relative;
+        height: 83vh;
+        min-height: 80vh;
+        margin: 9vh auto;
+        display: grid;
+        grid-template-areas: "aside content";
+        grid-template-columns: 30% 70%;
+        border-radius: 4rem;
+        box-shadow: 0 0 100px -5px rgb(0 0 0 / 0.25);
+        overflow: hidden;
+    }
+
+    .layout__aside {
+        grid-area: aside;
+        position: static;
+        margin-left: 0;
+        opacity: 1;
+    }
+
+    .layout__menu-toggle {
         display: none;
     }
 
-    .container__navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: auto;
-    }
-
-    .navbar__list {
-        flex-direction: row;
-        margin-top: 0;
-    }
-
-
-
-    /* ==================================== ABOUT PAGE ==================================== */
-    .container__contact {
-        flex-flow: row nowrap;
-        padding: 1.5rem 0 4.5rem;
-    }
-
-    .contact__cards {
-        margin-top: 0;
-        flex-basis: 40%;
-        grid-template-columns: repeat(auto-fit, minmax(calc(220px - 0.7rem), 1fr));
-        transform: translateX(30px);
-    }
-
-    .cards__card,
-    .card__text {
-        width: auto;
-    }
-
-    .contact__form {
-        flex-basis: 55%;
-        padding-bottom: 4.5rem;
-        transform: translateX(-40px);
-    }
-
-    .form__title {
-        font-size: 6rem;
-    }
-
-    .form__group {
-        width: 70%;
+    .layout__main {
+        grid-area: content;
     }
 }

@@ -13,7 +13,8 @@
 }
 
 html {
-  font-size: 62.5%; /* Equivalent to 10px */
+  font-size: 62.5%;
+  /* Equivalent to 10px */
 }
 
 body {
@@ -55,7 +56,7 @@ svg {
 .layout__menu-toggle {
   position: absolute;
   top: 1rem;
-  right: 2rem;
+  right: 3%;
   width: 4.8rem;
   height: 4.8rem;
   font-size: 2.5rem;
@@ -133,8 +134,8 @@ svg {
   margin-left: auto;
 }
 
-.aside__user-options > *,
-.aside__user-projects > *{
+.aside__user-options>*,
+.aside__user-projects>* {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -188,7 +189,7 @@ svg {
   margin-top: 1rem;
 }
 
-.project__symbol{
+.project__symbol {
   font-size: 1.8rem;
   font-weight: 500;
   margin-left: 0.6rem;
@@ -217,7 +218,7 @@ svg {
 }
 
 .project__title:hover::after {
-  width:100%;
+  width: 100%;
 }
 
 /* ====================== DIALOG ======================*/
@@ -281,7 +282,7 @@ svg {
   padding: 1.5rem;
 }
 
-.form__group > div {
+.form__group>div {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -292,7 +293,7 @@ svg {
 }
 
 .form__input:focus {
-  outline: 1px solid var(--icon-primary-color);
+  outline: none;
 }
 
 #title {
@@ -305,8 +306,9 @@ svg {
   color: var(--placeholder-color);
 }
 
-#date, #priority, #category {
-  /* flex-basis: 15%; */
+#date,
+#priority,
+#category {
   width: 10rem;
 }
 
@@ -334,12 +336,13 @@ svg {
 
 /* ====================== MAIN ======================*/
 .layout__main {
+  grid-area: content;
   padding: 2rem 2rem 0;
   overflow: auto;
 }
 
-.layout__main > *,
-.main__todo > div {
+.layout__main>*,
+.main__todo>div {
   margin-bottom: 2rem;
 }
 
@@ -383,7 +386,7 @@ svg {
   border: 1px solid var(--danger-color);
 }
 
-.checklist__p-1[type="checkbox"]::before{
+.checklist__p-1[type="checkbox"]::before {
   box-shadow: inset 10px 10px var(--danger-color);
 }
 
@@ -391,7 +394,7 @@ svg {
   border: 1px solid var(--warning-color);
 }
 
-.checklist__p-2[type="checkbox"]::before{
+.checklist__p-2[type="checkbox"]::before {
   box-shadow: inset 10px 10px var(--warning-color);
 }
 
@@ -399,7 +402,7 @@ svg {
   border: 1px solid var(--info-color);
 }
 
-.checklist__p-3[type="checkbox"]::before{
+.checklist__p-3[type="checkbox"]::before {
   box-shadow: inset 10px 10px var(--info-color);
 }
 
@@ -452,4 +455,30 @@ svg {
 .list__notfound {
   font-size: 2.5rem;
   font-weight: bold;
+}
+
+.list__info {
+  display: inline-block;
+  position: absolute;
+  top: 0.3rem;
+  right: 7%;
+  width: fit-content;
+  padding: 0 0.4rem;
+  color: var(--primary-color);
+  font-weight: bold;
+  line-height: 1.7rem;
+}
+
+.list__info-new {
+  background-color: lightgreen;
+}
+
+.list__info-expired {
+  background-color: var(--danger-color);
+}
+
+.main__sort {
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
 }

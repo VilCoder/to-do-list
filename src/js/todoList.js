@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, parse, differenceInHours, isPast } from 'date-fns';
 
 import { displayContentProject, displayNameProject } from "./projects";
 import { openDialog, closeDialog } from './handlerDialog';
@@ -75,13 +75,26 @@ function createTask(...args) {
   setStoredTodoListData(Object.values(storedTasks).flat()); // Flattens nested arrays
 }
 
-function sortByPriority() {
-  return [...arrayTodoList].sort((a, b) => {
-    let highestPriority = parseInt(a.getPriority().slice(1));
-    let lowerPriority = parseInt(b.getPriority().slice(1));
+function sortByPriorityTodoList() {
+  const tasks = getStoredTodoListData();
+  
+  // Obtener todas las tareas de cada categoría en un solo array
+  const allTasks = Object.values(tasks).flat();
 
-    return highestPriority - lowerPriority;
+  // Ordenar por prioridad (p1 > p2 > p3)
+  const orderedTasks =  allTasks.sort((a, b) => {
+    const priorityA = parseInt(a.getPriority().slice(1)); // Extrae número de "p1", "p2", "p3"
+    const priorityB = parseInt(b.getPriority().slice(1));
+
+    return priorityA - priorityB; // Orden ascendente (p1 primero)
   });
+
+  // Converts each object into an instance of Task
+  for (let category in orderedTasks) {
+    tasksData[category] = tasksData[category].map(Task.fromJSON);
+  }
+
+  return orderedTasks;
 }
 
 function searchTodoList(value) {
@@ -99,7 +112,7 @@ function searchTodoList(value) {
   return searchedValue;
 }
 
-function updateTodoList(main, task, hidden=1) {
+function updateTodoList(main, task, hidden = 1) {
   const todo = document.createElement('div');
   todo.classList.add('todo__list');
   todo.dataset.date = task.getDate();
@@ -132,15 +145,41 @@ function updateTodoList(main, task, hidden=1) {
   }
 
   if (checkbox.checked) {
-    if(hidden) {
+    if (hidden) {
       todo.style.display = 'none';
     }
-
     todo.style.opacity = 0.5;
   }
 
+  const span = document.createElement('span');
+  span.classList.add('list__info');
+
+  // Extracts date and time
+  const [date, time] = task.getDate().split(',').map(part => part.trim()); 
+
+  if (date && time) {
+    // Converts the date to the correct format
+    const parsedDate = parse(date, 'd/MMM/y', new Date());
+    const parsedTime = parse(time, 'h:mm a', new Date());
+
+    // Assign hour and minutes to the date
+    parsedDate.setHours(parsedTime.getHours());
+    parsedDate.setMinutes(parsedTime.getMinutes());
+
+    // Calculate time difference
+    const hoursPassed = differenceInHours(new Date(), parsedDate);
+
+    if (isPast(parsedDate)) { // check if the date has already passed
+      span.classList.add('list__info-expired');
+      span.textContent = 'Expired';
+    } else if (hoursPassed < 6) {
+      span.classList.add('list__info-new');
+      span.textContent = 'New';
+    }
+  }
+
+  todo.appendChild(span);
   todo.appendChild(checkbox);
-  // Add DOM elements to the end of the to-do list
   todo.insertAdjacentHTML(
     'beforeend',
     `
@@ -212,6 +251,7 @@ function editTodoList(value = '') {
 
             setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
             closeDialog();
+            displayNameProject();
 
             if (mainTitle === 'today') {
               displayToday();
@@ -247,9 +287,14 @@ function removeTodoList() {
       if (tasks[category]) {
         tasks[category] = tasks[category].filter(task => task.getDate() !== date);
 
+        console.log( tasks[category] );
+
         if (tasks[category].length === 0) {
+          console.log( `Categoria ${category} eliminada` );
           delete tasks[category];
         }
+
+        console.log( Object.values(tasks).flat() );
 
         setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
       }
@@ -259,7 +304,7 @@ function removeTodoList() {
   });
 }
 
-function changeCheckedTodoList() {
+function changeCheckedTodoList(value = '') {
   document.querySelectorAll('.list__checklist').forEach(checkbox => {
     checkbox.addEventListener('change', function () {
       const category = this.dataset.category;
@@ -313,12 +358,14 @@ function setStoredTodoListData(obj) {
 
   if (Object.keys(tasks).length > 0) {
     localStorage.setItem('todoList', JSON.stringify(tasks));
+  } else {
+    localStorage.removeItem('todoList'); // 🔥 Elimina completamente el almacenamiento si no hay tareas
   }
 }
 
 export {
   createTask,
-  sortByPriority,
+  sortByPriorityTodoList,
   searchTodoList,
   getStoredTodoListData,
   updateTodoList,

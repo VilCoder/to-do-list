@@ -1,6 +1,8 @@
 import { updateTodoList, getStoredTodoListData, removeTodoList, editTodoList, changeCheckedTodoList } from "./todoList";
 import { closeDialog } from "./handlerDialog";
 
+import sortIcon from '../icons/sort.svg';
+
 function random(min, max) {
   let num = Math.floor(Math.random() * (max - min)) + min;
   return num
@@ -17,6 +19,7 @@ function displayContentProject(category) {
   main.insertAdjacentHTML( // Add DOM elements to the end of main
     'beforeend',
     `
+    <div class="main__sort"><i class="icon">${sortIcon}</i> <p>Sort by priority</p></div>
     <h3 class="main__title">${category}</h3>
     `
   );
@@ -25,7 +28,7 @@ function displayContentProject(category) {
     updateTodoList(main, task);
     removeTodoList();
     editTodoList(category);
-    changeCheckedTodoList();
+    changeCheckedTodoList(category);
     closeDialog();
   });
 }

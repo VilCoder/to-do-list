@@ -1,7 +1,7 @@
 import '../css/reset.css';
 import '../css/scroll.css';
 import '../css/styles.css';
-// import '../css/responsive.css';
+import '../css/responsive.css';
 
 import { displayAddTask } from './addTask';
 import { handlerEnterSearch } from './search';
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     option.addEventListener('click', () => {
       options.forEach(option => option.classList.remove('option__active'));
       icons.forEach(icon => icon.classList.remove('icon__active'));
-      projectContain.forEach(icon => icon.classList.remove('option__active'));
+      projectContain.forEach(title => title.classList.remove('option__active'));
       
       option.classList.add('option__active');
       icons[index + 1].classList.add('icon__active');
