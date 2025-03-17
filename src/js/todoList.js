@@ -1,4 +1,4 @@
-import { format, parse, differenceInHours, isPast } from 'date-fns';
+import { format, parse, differenceInHours, differenceInDays, isPast } from 'date-fns';
 
 import { displayContentProject, displayNameProject } from "./projects";
 import { openDialog, closeDialog } from './handlerDialog';
@@ -75,26 +75,24 @@ function createTask(...args) {
   setStoredTodoListData(Object.values(storedTasks).flat()); // Flattens nested arrays
 }
 
-function sortByPriorityTodoList() {
-  const tasks = getStoredTodoListData();
+function sortByPriorityTodoList(value = '') {
+  document.querySelector('.main__sort').addEventListener('click', () => {
+    const tasks = getStoredTodoListData();
+    
+    // Obtener todas las tareas de cada categoría en un solo array
+    const allTasks = Object.values(tasks).flat();
   
-  // Obtener todas las tareas de cada categoría en un solo array
-  const allTasks = Object.values(tasks).flat();
-
-  // Ordenar por prioridad (p1 > p2 > p3)
-  const orderedTasks =  allTasks.sort((a, b) => {
-    const priorityA = parseInt(a.getPriority().slice(1)); // Extrae número de "p1", "p2", "p3"
-    const priorityB = parseInt(b.getPriority().slice(1));
-
-    return priorityA - priorityB; // Orden ascendente (p1 primero)
+    // Ordenar por prioridad (p1 > p2 > p3)
+    const orderedTasks =  allTasks.sort((a, b) => {
+      const priorityA = parseInt(a.getPriority().slice(1)); // Extrae número de "p1", "p2", "p3"
+      const priorityB = parseInt(b.getPriority().slice(1));
+  
+      return priorityA - priorityB; // Orden ascendente (p1 primero)
+    });
+  
+    setStoredTodoListData(Object.values(orderedTasks).flat()); // Flattens nested arrays
+    reloadTodoListScreen(value);
   });
-
-  // Converts each object into an instance of Task
-  for (let category in orderedTasks) {
-    tasksData[category] = tasksData[category].map(Task.fromJSON);
-  }
-
-  return orderedTasks;
 }
 
 function searchTodoList(value) {
@@ -144,37 +142,30 @@ function updateTodoList(main, task, hidden = 1) {
     }
   }
 
-  if (checkbox.checked) {
+  if (checkbox.disabled) {
     if (hidden) {
       todo.style.display = 'none';
     }
+
     todo.style.opacity = 0.5;
   }
 
   const span = document.createElement('span');
   span.classList.add('list__info');
 
-  // Extracts date and time
-  const [date, time] = task.getDate().split(',').map(part => part.trim()); 
+  // Extracts only the date part without the time
+  const date = task.getDate().split(',')[0]; // "13/mar/2025"
 
-  if (date && time) {
+  if (date) {
     // Converts the date to the correct format
-    const parsedDate = parse(date, 'd/MMM/y', new Date());
-    const parsedTime = parse(time, 'h:mm a', new Date());
+    const parsedDate = parse(date.trim(), 'd/MM/y', new Date());
 
-    // Assign hour and minutes to the date
-    parsedDate.setHours(parsedTime.getHours());
-    parsedDate.setMinutes(parsedTime.getMinutes());
+    // Calculate the difference in days
+    const daysPassed = differenceInDays(parsedDate, new Date());
 
-    // Calculate time difference
-    const hoursPassed = differenceInHours(new Date(), parsedDate);
-
-    if (isPast(parsedDate)) { // check if the date has already passed
+    if (daysPassed < 0) { // check if the date has already passed
       span.classList.add('list__info-expired');
       span.textContent = 'Expired';
-    } else if (hoursPassed < 6) {
-      span.classList.add('list__info-new');
-      span.textContent = 'New';
     }
   }
 
@@ -241,7 +232,7 @@ function editTodoList(value = '') {
 
             if (endDate) {
               const formattedDated = new Date(endDate);
-              endDate = format(formattedDated, 'd/MMM/y, p').toLowerCase();
+              endDate = format(formattedDated, 'd/MM/y, p').toLowerCase();
             }
 
             todoList.setCategory(category.value);
@@ -252,16 +243,7 @@ function editTodoList(value = '') {
             setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
             closeDialog();
             displayNameProject();
-
-            if (mainTitle === 'today') {
-              displayToday();
-            } else if (mainTitle === 'next') {
-              displayNext();
-            } else if (mainTitle === value) {
-              displayContentProject(value);
-            } else {
-              displaySearch(value);
-            }
+            reloadTodoListScreen(value);
           }, { once: true }); // Automatically removes the addEventListener after it runs
         }
       }
@@ -310,7 +292,6 @@ function changeCheckedTodoList(value = '') {
       const category = this.dataset.category;
       const checkboxDate = this.dataset.date;
       const tasks = getStoredTodoListData();
-      let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
 
       if (tasks[category]) {
         const todoList = tasks[category].find(task => task.getDate() === checkboxDate);
@@ -319,20 +300,25 @@ function changeCheckedTodoList(value = '') {
           todoList.setChecklist(this.checked);
 
           setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
-
-          if (mainTitle === 'today') {
-            displayToday();
-          } else if (mainTitle === 'next') {
-            displayNext();
-          } else if (mainTitle === value) {
-            displayContentProject(value);
-          } else {
-            displaySearch(value);
-          }
+          reloadTodoListScreen(value);
         }
       }
     });
   });
+}
+
+function reloadTodoListScreen(value) {
+  let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
+  
+  if (mainTitle === 'today') {
+    displayToday();
+  } else if (mainTitle === 'next') {
+    displayNext();
+  } else if (mainTitle === value) {
+    displayContentProject(value);
+  } else {
+    displaySearch(value);
+  }
 }
 
 function getStoredTodoListData() {

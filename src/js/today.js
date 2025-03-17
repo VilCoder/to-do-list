@@ -23,45 +23,24 @@ function displayToday() {
     tasks[category].forEach((task) => {
       // Extracts only the date part without the time
       const date = task.getDate().split(',')[0]; // "13/mar/2025"
+      console.log( date );
 
       if (date) {
         // Converts the date to the correct format
-        const parsedDate = parse(date.trim(), 'd/MMM/y', new Date());
+        const parsedDate = parse(date.trim(), 'd/MM/y', new Date());
       
       if (isToday(parsedDate)) { // Check if the date is today
           updateTodoList(main, task);
           removeTodoList();
           editTodoList();
           changeCheckedTodoList();
+          sortByPriorityTodoList();
         }
       }
     });
   }
 
   closeDialog();
-
-  // document.querySelector('.main__sort').addEventListener('click', () => {
-  //   const orderedTasks = sortByPriorityTodoList();
-  //   for (let category in tasks) {
-  //     tasks[category].forEach((task) => {
-  //       // Extracts only the date part without the time
-  //       const date = task.getDate().split(',')[0]; // "13/mar/2025"
-  
-  //       if (date) {
-  //         // Converts the date to the correct format
-  //         const parsedDate = parse(date.trim(), 'd/MMM/y', new Date());
-        
-  //       if (isToday(parsedDate)) { // Check if the date is today
-  //           updateTodoList(main, task);
-  //           removeTodoList();
-  //           editTodoList();
-  //           changeCheckedTodoList();
-  //         }
-  //       }
-  //     });
-  //   }
-  //   // updateTodoList(main, task);
-  // })
 }
 
 export { displayToday };

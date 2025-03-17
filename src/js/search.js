@@ -1,6 +1,6 @@
 import sadFaceIcon from '../icons/emoticon-sad-outline.svg';
 
-import { searchTodoList, updateTodoList, editTodoList, removeTodoList, changeCheckedTodoList } from "./todoList"
+import { searchTodoList, updateTodoList, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList"
 import { closeDialog } from './handlerDialog';
 
 import sortIcon from '../icons/sort.svg';
@@ -32,10 +32,11 @@ function displaySearch(searchValue) {
   }
 
   searchedValue.forEach((task) => {
-    updateTodoList(main, task)
+    updateTodoList(main, task, 0)
     removeTodoList();
     editTodoList(searchValue);
-    changeCheckedTodoList();
+    changeCheckedTodoList(searchValue);
+    sortByPriorityTodoList(searchValue);
   });
 }
 

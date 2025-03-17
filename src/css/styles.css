@@ -2,7 +2,7 @@
 :root {
   --background-color: #ccc;
   --primary-color: #fff;
-  --icon-primary-color: #cbc9c7;
+  --icon-color: #cbc9c7;
   --danger-color: #dd4c3f;
   --warning-color: #f5c542;
   --info-color: #4986e5;
@@ -38,7 +38,7 @@ body {
 
 svg {
   /* background-color: #dd4c3f; */
-  color: var(--icon-primary-color);
+  color: var(--icon-color);
 }
 
 
@@ -55,8 +55,8 @@ svg {
 
 .layout__menu-toggle {
   position: absolute;
-  top: 1rem;
-  right: 3%;
+  top: 0.8rem;
+  right: 5.5%;
   width: 4.8rem;
   height: 4.8rem;
   font-size: 2.5rem;
@@ -234,7 +234,7 @@ svg {
   max-width: 95%;
   width: 60rem;
   height: 27rem;
-  border: 1px solid var(--icon-primary-color);
+  border: 1px solid var(--icon-color);
   border-radius: 15px;
   opacity: 0;
   z-index: 99999;
@@ -271,11 +271,10 @@ svg {
 
 .form__group:first-of-type {
   flex-grow: 1;
-  display: flex;
   flex-direction: column;
   justify-content: space-around;
   padding: 1.5rem;
-  border-bottom: 1px solid var(--icon-primary-color);
+  border: 1px solid var(--icon-color);
 }
 
 .form__group:last-of-type {
@@ -353,8 +352,7 @@ svg {
   align-items: center;
   column-gap: 0.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--icon-primary-color);
-  transition: all 1s linear;
+  border-bottom: 1px solid var(--icon-color);
 }
 
 .list__checklist[type="checkbox"] {
@@ -461,7 +459,7 @@ svg {
   display: inline-block;
   position: absolute;
   top: 0.3rem;
-  right: 7%;
+  right: 15%;
   width: fit-content;
   padding: 0 0.4rem;
   color: var(--primary-color);
@@ -481,4 +479,11 @@ svg {
   display: flex;
   justify-content: end;
   gap: 1rem;
+  margin-right: 1.9rem;
+  cursor: pointer;
+}
+
+.main__sort:hover {
+  color: var(--danger-color);
+  fill: var(--danger-color)
 }

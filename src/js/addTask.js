@@ -24,7 +24,8 @@ function addTaskHandler() {
 
   try {
     const formattedDated = new Date(date.value);
-    endDate = format(formattedDated, 'd/MMM/y, p').toLowerCase();
+    console.log( formattedDated );
+    endDate = format(formattedDated, 'd/MM/y, p').toLowerCase();
   } catch (error) {
     endDate = date.value;
   }

@@ -1,4 +1,4 @@
-import { updateTodoList, getStoredTodoListData, removeTodoList, editTodoList, changeCheckedTodoList } from "./todoList";
+import { updateTodoList, getStoredTodoListData, removeTodoList, editTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
 import { closeDialog } from "./handlerDialog";
 
 import sortIcon from '../icons/sort.svg';
@@ -29,6 +29,7 @@ function displayContentProject(category) {
     removeTodoList();
     editTodoList(category);
     changeCheckedTodoList(category);
+    sortByPriorityTodoList(category);
     closeDialog();
   });
 }
