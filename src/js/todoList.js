@@ -78,18 +78,18 @@ function createTask(...args) {
 function sortByPriorityTodoList(value = '') {
   document.querySelector('.main__sort').addEventListener('click', () => {
     const tasks = getStoredTodoListData();
-    
-    // Obtener todas las tareas de cada categoría en un solo array
+
+    // Gets all tasks from each category in a single array
     const allTasks = Object.values(tasks).flat();
-  
-    // Ordenar por prioridad (p1 > p2 > p3)
-    const orderedTasks =  allTasks.sort((a, b) => {
-      const priorityA = parseInt(a.getPriority().slice(1)); // Extrae número de "p1", "p2", "p3"
+
+    // Sort by priority (p1 > p2 > p3)
+    const orderedTasks = allTasks.sort((a, b) => {
+      const priorityA = parseInt(a.getPriority().slice(1)); // Extract only the number from "p1", "p2", "p3"
       const priorityB = parseInt(b.getPriority().slice(1));
-  
-      return priorityA - priorityB; // Orden ascendente (p1 primero)
+
+      return priorityA - priorityB; // Ascending order
     });
-  
+
     setStoredTodoListData(Object.values(orderedTasks).flat()); // Flattens nested arrays
     reloadTodoListScreen(value);
   });
@@ -220,11 +220,13 @@ function editTodoList(value = '') {
           const priority = document.querySelector('#priority');
           priority.value = todoList.getPriority();
 
+          const buttonText = document.querySelector('.button__text');
+          buttonText.textContent = 'Ok';
+
           const formButton = document.querySelector('.form__button');
 
           // Before adding a new listener, delete the previous ones
           const newButton = formButton.cloneNode(true);
-          newButton.textContent = 'Ok';
           formButton.replaceWith(newButton); // Delete previous events
 
           newButton.addEventListener('click', () => {
@@ -269,14 +271,14 @@ function removeTodoList() {
       if (tasks[category]) {
         tasks[category] = tasks[category].filter(task => task.getDate() !== date);
 
-        console.log( tasks[category] );
+        console.log(tasks[category]);
 
         if (tasks[category].length === 0) {
-          console.log( `Categoria ${category} eliminada` );
+          console.log(`Categoria ${category} eliminada`);
           delete tasks[category];
         }
 
-        console.log( Object.values(tasks).flat() );
+        console.log(Object.values(tasks).flat());
 
         setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
       }
@@ -309,7 +311,7 @@ function changeCheckedTodoList(value = '') {
 
 function reloadTodoListScreen(value) {
   let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
-  
+
   if (mainTitle === 'today') {
     displayToday();
   } else if (mainTitle === 'next') {

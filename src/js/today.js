@@ -23,7 +23,6 @@ function displayToday() {
     tasks[category].forEach((task) => {
       // Extracts only the date part without the time
       const date = task.getDate().split(',')[0]; // "13/mar/2025"
-      console.log( date );
 
       if (date) {
         // Converts the date to the correct format
