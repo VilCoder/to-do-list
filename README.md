@@ -7,3 +7,5 @@ Features:
 ✅ Save tasks to LocalStorage.
 ✅ Sort tasks by priority.
 ✅ Responsive and user-friendly design.
+
+Live Preview: https://vilcoder.github.io/to-do/
