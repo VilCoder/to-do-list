@@ -17,20 +17,20 @@ function displayAddTask() {
 }
 
 function addTaskHandler() {
-  const category = document.querySelector('#category');
-  const title = document.querySelector('#title');
-  const date = document.querySelector('#date');
-  const priority = document.querySelector('#priority');
+  const category = document.querySelector('#category').value;
+  const title = document.querySelector('#title').value;
+  const date = document.querySelector('#date').value;
+  const priority = document.querySelector('#priority').value;
   let endDate;
 
   try {
-    const formattedDated = new Date(date.value);
+    const formattedDated = new Date(date);
     endDate = format(formattedDated, 'd/MM/y, p').toLowerCase();
   } catch (error) {
-    endDate = date.value;
+    endDate = date;
   }
 
-  createTask(category.value, title.value, endDate, priority.value);
+  createTask(category, title, endDate, priority);
   closeDialog();
   displayNameProject();
   displayToday();

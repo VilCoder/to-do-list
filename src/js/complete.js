@@ -1,4 +1,4 @@
-import { getStoredTodoListData, updateTodoList, removeTodoList } from "./todoList";
+import { getStoredTodoListData, updateTodoListScreen, removeTodoList } from "./todoList";
 import { closeDialog } from "./handlerDialog";
 
 import sortIcon from '../icons/sort.svg';
@@ -19,7 +19,7 @@ function displayComplete() {
   for (let category in tasks) {
     tasks[category].forEach(task => {
       if (task.getChecklist()) {
-        updateTodoList(main, task, 0);
+        updateTodoListScreen(main, task, 0);
         removeTodoList();
       }
     });

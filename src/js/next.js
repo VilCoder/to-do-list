@@ -1,4 +1,4 @@
-import { getStoredTodoListData, updateTodoList, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
+import { getStoredTodoListData, updateTodoListScreen, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
 import { closeDialog } from './handlerDialog';
 
 import sortIcon from '../icons/sort.svg';
@@ -19,7 +19,7 @@ function displayNext() {
 
   for (let category in tasks) {
     tasks[category].forEach((task) => {
-      updateTodoList(main, task);
+      updateTodoListScreen(main, task);
       removeTodoList();
       editTodoList();
       changeCheckedTodoList();

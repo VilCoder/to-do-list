@@ -1,4 +1,4 @@
-import { format, parse, differenceInHours, differenceInDays, isPast } from 'date-fns';
+import { format, parse, differenceInDays } from 'date-fns';
 
 import { displayContentProject, displayNameProject } from "./projects";
 import { openDialog, closeDialog } from './handlerDialog';
@@ -110,7 +110,7 @@ function searchTodoList(value) {
   return searchedValue;
 }
 
-function updateTodoList(main, task, hidden = 1) {
+function updateTodoListScreen(main, task, hidden = 1) {
   const todo = document.createElement('div');
   todo.classList.add('todo__list');
   todo.dataset.date = task.getDate();
@@ -187,7 +187,6 @@ function updateTodoList(main, task, hidden = 1) {
 
 function editTodoList(value = '') {
   const todoList = document.querySelectorAll('.todo__list');
-  let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
 
   todoList.forEach(todo => {
     const existingButton = todo.querySelector('.list__edit');
@@ -271,14 +270,9 @@ function removeTodoList() {
       if (tasks[category]) {
         tasks[category] = tasks[category].filter(task => task.getDate() !== date);
 
-        console.log(tasks[category]);
-
         if (tasks[category].length === 0) {
-          console.log(`Categoria ${category} eliminada`);
           delete tasks[category];
         }
-
-        console.log(Object.values(tasks).flat());
 
         setStoredTodoListData(Object.values(tasks).flat()); // Flattens nested arrays
       }
@@ -347,7 +341,7 @@ function setStoredTodoListData(obj) {
   if (Object.keys(tasks).length > 0) {
     localStorage.setItem('todoList', JSON.stringify(tasks));
   } else {
-    localStorage.removeItem('todoList'); // 🔥 Elimina completamente el almacenamiento si no hay tareas
+    localStorage.removeItem('todoList'); // Completely removes storage if there are no tasks
   }
 }
 
@@ -356,7 +350,7 @@ export {
   sortByPriorityTodoList,
   searchTodoList,
   getStoredTodoListData,
-  updateTodoList,
+  updateTodoListScreen,
   editTodoList,
   removeTodoList,
   changeCheckedTodoList,
