@@ -1,7 +1,8 @@
 import sadFaceIcon from '../icons/emoticon-sad-outline.svg';
 
-import { searchTodoList, updateTodoListScreen, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList"
+import { searchTodoList, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList"
 import { closeDialog } from './handlerDialog';
+import { updateScreen } from "./handlerScreen";
 
 import sortIcon from '../icons/sort.svg';
 
@@ -32,7 +33,7 @@ function displaySearch(searchValue) {
   }
 
   searchedValue.forEach((task) => {
-    updateTodoListScreen(main, task, 0)
+    updateScreen(main, task, 0)
     removeTodoList();
     editTodoList(searchValue);
     changeCheckedTodoList(searchValue);

@@ -1,7 +1,8 @@
 import { parse, isToday } from 'date-fns';
 
-import { getStoredTodoListData, updateTodoListScreen, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
+import { getStoredTodoListData, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
 import { closeDialog } from './handlerDialog';
+import { updateScreen } from "./handlerScreen";
 
 import sortIcon from '../icons/sort.svg';
 
@@ -29,7 +30,7 @@ function displayToday() {
         const parsedDate = parse(date.trim(), 'd/MM/y', new Date());
       
       if (isToday(parsedDate)) { // Check if the date is today
-          updateTodoListScreen(main, task);
+          updateScreen(main, task);
           removeTodoList();
           editTodoList();
           changeCheckedTodoList();
