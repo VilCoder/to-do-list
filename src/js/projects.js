@@ -1,8 +1,7 @@
-import { getStoredTodoListData, removeTodoList, editTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
-import { closeDialog } from "./handlerDialog";
-import { updateScreen } from "./handlerScreen";
-
 import sortIcon from '../icons/sort.svg';
+
+import DOM from './DOM';
+import { loadTasks } from './task';
 
 function random(min, max) {
   let num = Math.floor(Math.random() * (max - min)) + min;
@@ -14,7 +13,7 @@ function randomColor() {
 }
 
 function displayContentProject(category) {
-  const tasks = getStoredTodoListData();
+  const tasks = loadTasks();
   const main = document.querySelector('.layout__main');
   main.textContent = '';
   main.insertAdjacentHTML( // Add DOM elements to the end of main
@@ -26,12 +25,12 @@ function displayContentProject(category) {
   );
 
   tasks[category].forEach((task) => {
-    updateScreen(main, task);
-    removeTodoList();
-    editTodoList(category);
-    changeCheckedTodoList(category);
-    sortByPriorityTodoList(category);
-    closeDialog();
+    DOM.updateDom(main, task, 0);
+    DOM.removeTaskDom();
+    DOM.editTaskDom(category);
+    DOM.completeTaskDom(category);
+    DOM.sortTaskDom(category);
+    DOM.closeDialog();
   });
 }
 
@@ -61,7 +60,7 @@ function displayNameProject() {
   const userProjects = document.querySelector('.user-projects__project');
   userProjects.textContent = '';
 
-  const tasks = getStoredTodoListData();
+  const tasks = loadTasks();
 
   for (let category in tasks) {
     if (category) {

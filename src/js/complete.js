@@ -1,11 +1,11 @@
-import { getStoredTodoListData, removeTodoList } from "./todoList";
-import { closeDialog } from "./handlerDialog";
-import { updateScreen } from "./handlerScreen";
-
 import sortIcon from '../icons/sort.svg';
 
+import DOM from './DOM';
+import { loadTasks } from './task';
+
+
 function displayComplete() {
-  const tasks = getStoredTodoListData();
+  const tasks = loadTasks();
   const main = document.querySelector('.layout__main');
   main.textContent = '';
   main.insertAdjacentHTML( // Add DOM elements to the end of main
@@ -20,13 +20,13 @@ function displayComplete() {
   for (let category in tasks) {
     tasks[category].forEach(task => {
       if (task.getChecklist()) {
-        updateScreen(main, task, 0);
-        removeTodoList();
+        DOM.updateDom(main, task, 0);
+        DOM.removeTaskDom();
       }
     });
   }
 
-  closeDialog();
+  DOM.closeDialog();
 }
 
 export {

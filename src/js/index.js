@@ -3,11 +3,10 @@ import '../css/scroll.css';
 import '../css/styles.css';
 import '../css/responsive.css';
 
-import { displayAddTask } from './addTask';
+import DOM from './DOM';
 import { handlerEnterSearch } from './search';
 import { displayNext } from './next';
 import { displayToday } from './today';
-import { closeDialog } from './handlerDialog';
 import { displayNameProject } from './projects';
 import { displayComplete } from './complete';
 
@@ -53,16 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   dialog.addEventListener('cancel', (event) => {
     event.preventDefault();
-    closeDialog();
+    DOM.closeDialog();
   });
 
-  closeDialogBtn.addEventListener('click', closeDialog);
+  closeDialogBtn.addEventListener('click', DOM.closeDialog);
 
   asideButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       switch (index) {
         case 0:
-          displayAddTask();
+          DOM.displayAddTaskDom();
           break;
 
         case 1:

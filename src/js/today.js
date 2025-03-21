@@ -1,10 +1,9 @@
 import { parse, isToday } from 'date-fns';
-
-import { getStoredTodoListData, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
-import { closeDialog } from './handlerDialog';
-import { updateScreen } from "./handlerScreen";
-
 import sortIcon from '../icons/sort.svg';
+
+import { loadTasks } from './task';
+import DOM from './DOM';
+
 
 function displayToday() {
   const main = document.querySelector('.layout__main');
@@ -18,10 +17,10 @@ function displayToday() {
     `
   );
 
-  const tasks = getStoredTodoListData();
+  const tasks = loadTasks();
 
   for (let category in tasks) {
-    tasks[category].forEach((task) => {
+    tasks[category].forEach(task => {
       // Extracts only the date part without the time
       const date = task.getDate().split(',')[0]; // "13/mar/2025"
 
@@ -30,17 +29,17 @@ function displayToday() {
         const parsedDate = parse(date.trim(), 'd/MM/y', new Date());
       
       if (isToday(parsedDate)) { // Check if the date is today
-          updateScreen(main, task);
-          removeTodoList();
-          editTodoList();
-          changeCheckedTodoList();
-          sortByPriorityTodoList();
+          DOM.updateDom(main, task);
+          DOM.removeTaskDom();
+          DOM.editTaskDom();
+          DOM.completeTaskDom();
+          DOM.sortTaskDom();
         }
       }
     });
   }
 
-  closeDialog();
+  DOM.closeDialog();
 }
 
 export { displayToday };

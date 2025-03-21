@@ -1,13 +1,11 @@
 import sadFaceIcon from '../icons/emoticon-sad-outline.svg';
-
-import { searchTodoList, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList"
-import { closeDialog } from './handlerDialog';
-import { updateScreen } from "./handlerScreen";
-
 import sortIcon from '../icons/sort.svg';
 
+import todoList from './todoList';
+import DOM from './DOM';
+
 function displaySearch(searchValue) {
-  const searchedValue = searchTodoList(searchValue);
+  const searchedValue = todoList.searchTasks(searchValue);
   const main = document.querySelector('.layout__main');
   main.textContent = '';
   main.insertAdjacentHTML( // Add DOM elements to the end of main
@@ -18,7 +16,7 @@ function displaySearch(searchValue) {
     `
   );
 
-  closeDialog();
+  DOM.closeDialog();
 
   if (!searchValue || (searchedValue.length === 0)) {
     main.insertAdjacentHTML(
@@ -33,11 +31,11 @@ function displaySearch(searchValue) {
   }
 
   searchedValue.forEach((task) => {
-    updateScreen(main, task, 0)
-    removeTodoList();
-    editTodoList(searchValue);
-    changeCheckedTodoList(searchValue);
-    sortByPriorityTodoList(searchValue);
+    DOM.updateDom(main, task, 0)
+    DOM.removeTaskDom();
+    DOM.editTaskDom(searchValue);
+    DOM.completeTaskDom(searchValue);
+    DOM.sortTaskDom(searchValue);
   });
 }
 

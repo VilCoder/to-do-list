@@ -1,11 +1,10 @@
-import { getStoredTodoListData, editTodoList, removeTodoList, changeCheckedTodoList, sortByPriorityTodoList } from "./todoList";
-import { closeDialog } from './handlerDialog';
-import { updateScreen } from "./handlerScreen";
-
 import sortIcon from '../icons/sort.svg';
 
+import DOM from './DOM';
+import { loadTasks } from './task';
+
 function displayNext() {
-  const tasks = getStoredTodoListData();
+  const tasks = loadTasks();
 
   const main = document.querySelector('.layout__main');
   main.textContent = '';
@@ -20,18 +19,16 @@ function displayNext() {
 
   for (let category in tasks) {
     tasks[category].forEach((task) => {
-      updateScreen(main, task);
-      removeTodoList();
-      editTodoList();
-      changeCheckedTodoList();
-      sortByPriorityTodoList();
+      DOM.updateDom(main, task);
+      DOM.removeTaskDom();
+      DOM.editTaskDom();
+      DOM.completeTaskDom();
+      DOM.sortTaskDom();
     });
   }
 
-  closeDialog();
+  DOM.closeDialog();
 }
-
-
 
 export {
   displayNext,
