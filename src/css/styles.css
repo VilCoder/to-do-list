@@ -5,7 +5,7 @@
   --icon-color: #cbc9c7;
   --danger-color: #dd4c3f;
   --warning-color: #f5c542;
-  --info-color: #4986e5;
+  --info-color: #00ddeb;
   --layout-bg: #fff;
   --aside-color: #fcfaf8;
   --placeholder-color: #aaa;
@@ -113,7 +113,7 @@ svg {
 .aside__user-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.7rem;
 }
 
 .user-info__image,
@@ -267,7 +267,7 @@ svg {
 
 .form__group {
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
 }
 
 .form__group:first-of-type {
@@ -315,75 +315,61 @@ svg {
   font-size: 2rem;
 }
 
-.form__button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.form__create,
+.form__cancel {
   position: relative;
+  font-size: 1.8rem;
+  font-weight: bold;
   padding: 0.3rem 2rem;
-  background-color: rgb(0 0 0 / 0.8);
+  color: var(--primary-color);
   border: 0;
+  border-radius: 5px;
   cursor: pointer;
   overflow: hidden;
-  transition: all 1s;
-  -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
-}
-
-.form__button:hover {
-  box-shadow:
-    0 0 10px var(--warning-color),
-    0 0 30px var(--warning-color),
-    0 0 60px var(--warning-color),
-    0 0 100px var(--warning-color);
-}
-
-.form__button::before {
-  content: '';
-  position: absolute;
-  width: 2rem;
-  height: 400%;
-  background-color: var(--warning-color);
-  transition: all 1s;
-  animation: animate 2s linear infinite;
-}
-
-.form__button:hover::before {
-  width: 120%;
-}
-
-@keyframes animate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg)
-  }
-}
-
-.form__button::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  background-color: #0e1538;
-  transition: 0.5s;
-}
-
-.form__button:hover::after {
-  background-color: var(--warning-color);
-}
-
-.button__text {
-  position: relative;
-  font-weight: bold;
-  color: var(--primary-color);
-  opacity: 0.5;
-  transition: all 0.5s;
+  transition: all 300ms ease;
   z-index: 1;
 }
 
-.button__text:hover {
-  opacity: 1;
+.form__create {
+  background-color: #f5cd5e;
+}
+
+.form__cancel {
+  margin-left: auto;
+  background-color: var(--background-color);
+}
+
+.form__create:hover {
+  transform: translateY(-2px);
+  background: var(--warning-color);
+}
+
+.form__cancel:hover {
+  transform: translateY(-2px);
+  background: var(--placeholder-color);
+}
+
+.form__create:active,
+.form__cancel:active {
+  transform: scale(0.95);
+}
+
+.create__shine,
+.cancel__shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(12deg, transparent, rgb(255 255 255 / 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: 0;
+}
+
+.form__create:hover .create__shine,
+.form__cancel:hover .cancel__shine {
+  transform: translateX(100%);
 }
 
 
@@ -418,6 +404,7 @@ svg {
   height: 1.6rem;
   border-radius: 50%;
   border: 1px solid var(--main-color);
+  cursor: pointer;
 }
 
 .list__checklist[type="checkbox"]::before {
@@ -427,6 +414,8 @@ svg {
   box-shadow: inset 10px 10px var(--main-color);
   border-radius: 50%;
   transform: scale(0);
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
   transition: transform 120ms ease-in-out;
 }
 
@@ -467,6 +456,7 @@ svg {
   align-items: center;
   position: relative;
   left: 1.8rem;
+  width: 97%;
   font-size: 1.3rem;
   margin-top: 0.3rem;
   line-height: 1rem;
@@ -475,10 +465,11 @@ svg {
 .list__date-icon {
   display: inline-block;
   width: 1.5rem;
+  margin-left: 0.5rem;
 }
 
-.list__date-icon:last-child {
-  margin-left: 0.5rem;
+.list__date-category {
+  margin-left: auto
 }
 
 .list__edit {
@@ -489,6 +480,7 @@ svg {
   height: 2rem;
   background-color: transparent;
   border: 0;
+  cursor: pointer;
   fill: var(--main-color);
 }
 
@@ -533,7 +525,7 @@ svg {
   display: flex;
   justify-content: end;
   gap: 1rem;
-  margin-right: 1.9rem;
+  margin-right: 2.5rem;
   cursor: pointer;
 }
 

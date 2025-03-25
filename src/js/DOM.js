@@ -1,12 +1,13 @@
 import editIcon from '../icons/square-edit-outline.svg';
 import trashIcon from '../icons/trash.svg';
 import alarmIcon from '../icons/alarm.svg';
+import sortIcon from '../icons/sort.svg';
 
-import { differenceInDays, format, parse } from 'date-fns';
+import { format, isPast, parseISO } from 'date-fns';
 
 import { loadTasks } from "./task";
 import todoList from './todoList';
-import { displayContentProject, displayNameProject } from './projects';
+import project from './project';
 import { displayNext } from './next';
 import { displaySearch } from './search';
 import { displayToday } from './today';
@@ -34,79 +35,90 @@ const DOM = (function () {
     document.querySelector('.icon-tabler-x').style.opacity = 0;
   }
 
-  function updateDom(main, task, hidden = 1) {
-    const todo = document.createElement('div');
-    todo.classList.add('todo__list');
-    todo.dataset.date = task.getDate();
-    todo.dataset.category = task.getCategory();
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = task.getChecklist();
-    checkbox.disabled = task.getChecklist();
-    checkbox.classList.add('list__checklist');
-    checkbox.dataset.category = task.getCategory();
-    checkbox.dataset.date = task.getDate();
-
-    if (task.getPriority()) {
-      let priority = task.getPriority();
-
-      switch (priority) {
-        case 'p1':
-          checkbox.classList.add('checklist__p-1');
-          break;
-
-        case 'p2':
-          checkbox.classList.add('checklist__p-2');
-          break;
-
-        case 'p3':
-          checkbox.classList.add('checklist__p-3');
-          break;
-      }
-    }
-
-    if (checkbox.disabled) {
-      if (hidden) {
-        todo.style.display = 'none';
-      }
-
-      todo.style.opacity = 0.5;
-    }
-
-    const span = document.createElement('span');
-    span.classList.add('list__info');
-
-    // Extracts only the date part without the time
-    const date = task.getDate().split(',')[0]; // "13/mar/2025"
-
-    if (date) {
-      // Converts the date to the correct format
-      const parsedDate = parse(date.trim(), 'd/MM/y', new Date());
-
-      // Calculate the difference in days
-      const daysPassed = differenceInDays(parsedDate, new Date());
-
-      if (daysPassed < 0) { // check if the date has already passed
-        span.classList.add('list__info-expired');
-        span.textContent = 'Expired';
-      }
-    }
-
-    todo.appendChild(span);
-    todo.appendChild(checkbox);
-    todo.insertAdjacentHTML(
+  function updateDom(tasks, title, hidden = 1) {
+    const mainContent = document.querySelector('.layout__main');
+    mainContent.textContent = '';
+    mainContent.insertAdjacentHTML( // Add DOM elements to the end of main
       'beforeend',
       `
-        <p class="list__title">${task.getTitle()}</p>
-        <div class="list__date">
-          <p>${task.getDate()}</p>
-          <i class="list__date-icon">${alarmIcon}</i>
-        </div>
-     `
+      <div class="main__sort"><i class="icon">${sortIcon}</i> <p>Sort by priority</p></div>
+      <h3 class="main__title">${title}</h3>
+      <h4 class="main___subtitle">My Projects</h4>
+      `
     );
 
-    main.appendChild(todo);
+    tasks.forEach(task => {
+      const taskDiv = document.createElement('div');
+      taskDiv.classList.add('todo__list');
+      taskDiv.dataset.date = task.getDate();
+      taskDiv.dataset.category = task.getCategory();
+      taskDiv.dataset.checked = task.getChecklist();
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = task.getChecklist();
+      checkbox.disabled = task.getChecklist();
+      checkbox.classList.add('list__checklist');
+      checkbox.dataset.category = task.getCategory();
+      checkbox.dataset.date = task.getDate();
+
+      if (task.getPriority()) {
+        let priority = task.getPriority();
+
+        switch (priority) {
+          case 'p1':
+            checkbox.classList.add('checklist__p-1');
+            break;
+
+          case 'p2':
+            checkbox.classList.add('checklist__p-2');
+            break;
+
+          case 'p3':
+            checkbox.classList.add('checklist__p-3');
+            break;
+        }
+      }
+
+      if (checkbox.disabled) {
+        if (hidden) {
+          taskDiv.style.display = 'none';
+        }
+
+        taskDiv.style.opacity = 0.5;
+      }
+
+      const span = document.createElement('span');
+      span.classList.add('list__info');
+
+      let date = task.getDate();
+      let parsedDate = '';
+
+      if (date) {
+        if (isPast(parseISO(date))) {
+          span.classList.add('list__info-expired');
+          span.textContent = 'Expired';
+        }
+
+        parsedDate = format(parseISO(task.getDate()), 'd/MM/y, p').toLowerCase();
+      }
+
+      taskDiv.appendChild(span);
+      taskDiv.appendChild(checkbox);
+      taskDiv.insertAdjacentHTML(
+        'beforeend',
+        `
+          <p class="list__title">${task.getTitle()}</p>
+          <div class="list__date">
+            <p>${parsedDate}</p>
+            <i class="list__date-icon">${alarmIcon}</i>
+            <span class="list__date-category">${task.getCategory()}</span>
+          </div>
+        `
+      );
+
+      mainContent.appendChild(taskDiv);
+    });
   }
 
   function reloadDOM(value) {
@@ -117,7 +129,7 @@ const DOM = (function () {
     } else if (mainTitle === 'next') {
       displayNext();
     } else if (mainTitle === value) {
-      displayContentProject(value);
+      project.displayContent(value);
     } else {
       displaySearch(value);
     }
@@ -126,8 +138,8 @@ const DOM = (function () {
   function displayAddTaskDom() {
     openDialog();
 
-    const addTaskButton = document.querySelector('.form__button');
-    const buttonText = document.querySelector('.button__text');
+    const addTaskButton = document.querySelector('.form__create');
+    const buttonText = document.querySelector('.create__text');
     buttonText.textContent = 'Add Task';
 
     addTaskButton.removeEventListener('click', addTaskDom);
@@ -135,30 +147,22 @@ const DOM = (function () {
   }
 
   function addTaskDom() {
-    let endDate;
     let category = document.querySelector('#category').value;
     let title = document.querySelector('#title').value;
     let date = document.querySelector('#date').value;
     let priority = document.querySelector('#priority').value;
 
-    console.log(date);
-
-    try {
-      const formattedDated = new Date(date);
-      endDate = format(formattedDated, 'd/MM/y, p').toLowerCase();
-    } catch (error) {
-      endDate = date;
-    }
-
-    todoList.createTask(category, title, endDate, priority);
+    todoList.createTask(category, title, date, priority);
     closeDialog();
-    displayNameProject();
+    project.displayProject();
     displayToday();
   }
 
   function editTaskDom(value = '') {
     const taskContainer = document.querySelectorAll('.todo__list');
     taskContainer.forEach(element => {
+      if (element.dataset.checked === 'true') return;
+
       const editButton = document.createElement('button');
       editButton.classList.add('list__edit');
       editButton.innerHTML = editIcon;
@@ -180,38 +184,21 @@ const DOM = (function () {
             title.value = task.getTitle();
 
             const date = document.querySelector('#date');
-            
-            // Divide the date into day, month, year and time["13", "03", "2025", "10:00 AM"]
-            const [day, month, year, time, meridian] = task.getDate().replace(',', '').split(/[\s/]/);
-            let [hours, minutes] = time.split(':');
-
-            // Checks if the time is in 12-hour ("AM" or "PM") and converts it to 24-hour format
-            if (meridian === 'PM' && hours !== '12') hours = String(+hours + 12);
-            if (meridian === 'AM' && hours === '12') hours = '00';
-
-            const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours.padStart(2, '0')}:${minutes}`;
-            date.value = formattedDate;
+            date.value = task.getDate();
 
             const priority = document.querySelector('#priority');
             priority.value = task.getPriority();
 
-            document.querySelector('.button__text').textContent = 'Ok';
+            document.querySelector('.create__text').textContent = 'Ok';
 
-            const formButton = document.querySelector('.form__button');
+            const formButton = document.querySelector('.form__create');
             // Before adding a new listener, delete the previous ones
             const newButton = formButton.cloneNode(true);
             formButton.replaceWith(newButton); // Delete previous events
             newButton.addEventListener('click', () => {
-              let endDate = date.value;
-
-              if (endDate) {
-                const formattedDated = new Date(endDate);
-                endDate = format(formattedDated, 'd/MM/y, p').toLowerCase();
-              }
-
-              todoList.editTask(categoryTask, dateTask, category.value, title.value, endDate, priority.value);
+              todoList.editTask(categoryTask, dateTask, category.value, title.value, date.value, priority.value);
               closeDialog();
-              displayNameProject();
+              project.displayProject();
               reloadDOM(value);
             }, { once: true }); // Automatically removes the addEventListener after it runs;
           }
@@ -234,7 +221,7 @@ const DOM = (function () {
         let dateTask = element.dataset.date;
 
         todoList.removeTask(categoryTask, dateTask);
-        displayNameProject();
+        project.displayProject();
       };
     });
   }

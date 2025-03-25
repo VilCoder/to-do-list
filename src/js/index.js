@@ -7,33 +7,32 @@ import DOM from './DOM';
 import { handlerEnterSearch } from './search';
 import { displayNext } from './next';
 import { displayToday } from './today';
-import { displayNameProject } from './projects';
+import project from './project';
 import { displayComplete } from './complete';
 
 document.addEventListener('DOMContentLoaded', () => {
   displayToday();
-  displayNameProject();
+  project.displayProject();
 
   const aside = document.querySelector('.layout__aside');
   const menuButton = document.querySelector('.layout__menu-toggle');
-  const iconBars = document.querySelector('.icon-tabler-dots-vertical');
-  const iconClose = document.querySelector('.icon-tabler-x');
-  const options = document.querySelectorAll('.aside__user-options > div');
+  const options = document.querySelectorAll('.aside__user-options > li');
   const asideButtons = document.querySelectorAll('.user-options__text');
   const icons = document.querySelectorAll('.icon-tabler');
   const dialog = document.querySelector('#dialog');
-  const closeDialogBtn = document.querySelector('.form__close');
-  const projectContain = document.querySelectorAll('.project__content');
-
+  const closeDialogBtn = document.querySelector('.form__cancel');
+  
   menuButton.addEventListener('click', function () {
+    aside.classList.toggle("layout__aside-visible");
+    
+    const iconBars = document.querySelector('.icon-tabler-dots-vertical');
+    const iconClose = document.querySelector('.icon-tabler-x');
     let visible = document.querySelector(".layout__aside-visible");
 
-    if (!visible) {
-      aside.classList.add("layout__aside-visible");
+    if (visible) {
       iconBars.style.opacity = 0;
       iconClose.style.opacity = 1;
     } else {
-      aside.classList.remove("layout__aside-visible");
       iconBars.style.opacity = 1;
       iconClose.style.opacity = 0;
     }
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     option.addEventListener('click', () => {
       options.forEach(option => option.classList.remove('option__active'));
       icons.forEach(icon => icon.classList.remove('icon__active'));
-      projectContain.forEach(title => title.classList.remove('option__active'));
+      document.querySelectorAll('.project__content').forEach(project => project.classList.remove('option__active'));
       
       option.classList.add('option__active');
       icons[index + 1].classList.add('icon__active');
@@ -55,8 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     DOM.closeDialog();
   });
 
-  closeDialogBtn.addEventListener('click', DOM.closeDialog);
+  dialog.addEventListener('click', () => {
+    DOM.closeDialog();
+  });
 
+
+  closeDialogBtn.addEventListener('click', DOM.closeDialog);
+  document.querySelector('.dialog__form').addEventListener('click',(event) => event.stopPropagation());
+  
   asideButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       switch (index) {

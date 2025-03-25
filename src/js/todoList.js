@@ -1,3 +1,4 @@
+import { isToday, isFuture, parseISO } from 'date-fns';
 import { Task, saveTasks, loadTasks } from './task';
 
 const todoList = (function () {
@@ -64,18 +65,9 @@ const todoList = (function () {
   }
 
   function searchTasks(value) {
-    const searchedValue = [];
     const tasks = loadTasks();
-  
-    for (let category in tasks) {
-      tasks[category].forEach(task => {
-        if (task.getTitle().toLowerCase().includes(value)) {
-          searchedValue.push(task);
-        }
-      });
-    }
-  
-    return searchedValue;
+
+    return Object.values(tasks).flat().filter(task => task.getTitle().toLowerCase().includes(value));
   }
 
   function completeTask(categoryTask, dateTask, checked) {
@@ -92,13 +84,41 @@ const todoList = (function () {
     }
   }
 
+  function getCategoryTasks(category) {
+    const tasks = loadTasks();
+
+    return tasks[category];
+  }
+
+  function getTodayTasks() {
+    const tasks = loadTasks();
+
+    return Object.values(tasks).flat().filter(task => isToday(parseISO(task.getDate())));
+  }
+
+  function getTasks() {
+    const tasks = loadTasks();
+
+    return Object.values(tasks).flat();
+  }
+
+  function getCompleteTasks() {
+    const tasks = loadTasks();
+
+    return Object.values(tasks).flat().filter(task => task.getChecklist());
+  }
+
   return { 
     createTask, 
     editTask, 
     removeTask, 
     sortTask, 
     searchTasks, 
-    completeTask 
+    completeTask,
+    getCategoryTasks,
+    getTodayTasks,
+    getTasks,
+    getCompleteTasks
   }
 })();
 
