@@ -8,4 +8,4 @@ Features:
 ✅ Sort tasks by priority.
 ✅ Responsive and user-friendly design.
 
-Live Preview: https://vilcoder.github.io/to-do/
+Live Preview: https://vilcoder.github.io/to-do-list/
