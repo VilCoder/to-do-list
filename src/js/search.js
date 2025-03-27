@@ -5,12 +5,13 @@ import DOM from './DOM';
 
 function handlerEnterSearch() {
   const searchButton = document.querySelector('#search');
+  
   // Before adding a new listener, delete the previous ones
   const newSearchButton = searchButton.cloneNode(true);
   searchButton.replaceWith(newSearchButton); // Delete previous events
 
   newSearchButton.addEventListener('keydown', (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       let searchValue = newSearchButton.value.toLowerCase();
       displaySearch(searchValue)
     }
@@ -23,7 +24,7 @@ function displaySearch(searchValue) {
 
   DOM.closeDialog();
 
-  if (!searchValue || (searchedValue.length === 0)) {
+  if (!searchValue || searchedValue.length === 0) {
     const mainContent = document.querySelector('.layout__main');
     mainContent.textContent = '';
     mainContent.insertAdjacentHTML(
@@ -36,14 +37,14 @@ function displaySearch(searchValue) {
       `
     );
 
-    return;
+    return false;
   }
 
-  DOM.updateDom(searchedValue, title, 0);
-  DOM.removeTaskDom();
-  DOM.editTaskDom(searchValue);
-  DOM.completeTaskDom(searchValue);
-  DOM.sortTaskDom(searchValue);
+  DOM.updateDOM(searchedValue, title, 0);
+  DOM.removeTaskDOM();
+  DOM.editTaskDOM(searchValue);
+  DOM.completeTaskDOM(searchValue);
+  DOM.sortTaskDOM(searchValue);
 }
 
 export {

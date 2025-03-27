@@ -5,10 +5,10 @@ import '../css/responsive.css';
 
 import DOM from './DOM';
 import { handlerEnterSearch } from './search';
-import { displayNext } from './next';
-import { displayToday } from './today';
+import displayNext from './next';
+import displayToday from './today';
 import project from './project';
-import { displayComplete } from './complete';
+import displayComplete from './complete';
 
 document.addEventListener('DOMContentLoaded', () => {
   displayToday();
@@ -23,11 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeDialogBtn = document.querySelector('.form__cancel');
   
   menuButton.addEventListener('click', function () {
-    aside.classList.toggle("layout__aside-visible");
+    aside.classList.toggle('layout__aside-visible');
     
     const iconBars = document.querySelector('.icon-tabler-dots-vertical');
     const iconClose = document.querySelector('.icon-tabler-x');
-    let visible = document.querySelector(".layout__aside-visible");
+    let visible = document.querySelector('.layout__aside-visible');
 
     if (visible) {
       iconBars.style.opacity = 0;
@@ -40,9 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   options.forEach((option, index) => {
     option.addEventListener('click', () => {
-      options.forEach(option => option.classList.remove('option__active'));
-      icons.forEach(icon => icon.classList.remove('icon__active'));
-      document.querySelectorAll('.project__content').forEach(project => project.classList.remove('option__active'));
+      options.forEach((option) => option.classList.remove('option__active'));
+      icons.forEach((icon) => icon.classList.remove('icon__active'));
+      document.querySelectorAll('.project__content')
+          .forEach((project) => project.classList.remove('option__active'));
       
       option.classList.add('option__active');
       icons[index + 1].classList.add('icon__active');
@@ -65,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
   asideButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       switch (index) {
-        case 0:
-          DOM.displayAddTaskDom();
+        case 0: 
+          DOM.displayAddTaskDOM();
           break;
 
         case 1:

@@ -1,4 +1,4 @@
-import { isToday, isFuture, parseISO } from 'date-fns';
+import { isToday, parseISO } from 'date-fns';
 import { Task, saveTasks, loadTasks } from './task';
 
 const todoList = (function () {
@@ -16,17 +16,17 @@ const todoList = (function () {
   }
 
   function editTask(...args) {
-    let [categoryTask, dateTask, category, title, date, priority] = args;
     const tasks = loadTasks();
+    let [categoryTask, dateTask, category, title, date, priority] = args;
   
     if (tasks[categoryTask]) {
-      const task = tasks[categoryTask].find(task => task.getDate() === dateTask);
+      const task = tasks[categoryTask].find((task) => (task.getDate() === dateTask));
   
       if (task) { 
-        task.setCategory(category);
-        task.setTitle(title);
-        task.setDate(date);
-        task.setPriority(priority);
+        task.setCategory(category)
+          .setTitle(title)
+          .setDate(date)
+          .setPriority(priority);
   
         saveTasks(Object.values(tasks).flat()); // Flattens nested arrays
       }
@@ -37,7 +37,7 @@ const todoList = (function () {
     const tasks = loadTasks();
   
     if (tasks[categoryTask]) {
-      tasks[categoryTask] = tasks[categoryTask].filter(task => task.getDate() !== dateTask);
+      tasks[categoryTask] = tasks[categoryTask].filter((task) => (task.getDate() !== dateTask));
   
       if (tasks[categoryTask].length === 0) {
         delete tasks[categoryTask];
@@ -55,7 +55,8 @@ const todoList = (function () {
   
     // Sort by priority (p1 > p2 > p3)
     const orderedTasks = allTasks.sort((a, b) => {
-      const priorityA = parseInt(a.getPriority().slice(1)); // Extract only the number from "p1", "p2", "p3"
+      // Extract only the number from "p1", "p2", "p3"
+      const priorityA = parseInt(a.getPriority().slice(1)); 
       const priorityB = parseInt(b.getPriority().slice(1));
   
       return priorityA - priorityB; // Ascending order
@@ -67,17 +68,18 @@ const todoList = (function () {
   function searchTasks(value) {
     const tasks = loadTasks();
 
-    return Object.values(tasks).flat().filter(task => task.getTitle().toLowerCase().includes(value));
+    return Object.values(tasks).flat()
+              .filter((task) => task.getTitle().toLowerCase().includes(value));
   }
 
   function completeTask(categoryTask, dateTask, checked) {
     const tasks = loadTasks();
   
     if (tasks[categoryTask]) {
-      const task = tasks[categoryTask].find(task => task.getDate() === dateTask);
+      const task = tasks[categoryTask].find((task) => (task.getDate() === dateTask));
   
       if (task) {
-        task.setChecklist(checked);
+        task.setChecked(checked);
   
         saveTasks(Object.values(tasks).flat()); // Flattens nested arrays
       }
@@ -93,7 +95,8 @@ const todoList = (function () {
   function getTodayTasks() {
     const tasks = loadTasks();
 
-    return Object.values(tasks).flat().filter(task => isToday(parseISO(task.getDate())));
+    return Object.values(tasks).flat()
+              .filter((task) => isToday(parseISO(task.getDate())));
   }
 
   function getTasks() {
@@ -105,7 +108,8 @@ const todoList = (function () {
   function getCompleteTasks() {
     const tasks = loadTasks();
 
-    return Object.values(tasks).flat().filter(task => task.getChecklist());
+    return Object.values(tasks).flat()
+              .filter((task) => task.isChecked());
   }
 
   return { 
@@ -118,7 +122,7 @@ const todoList = (function () {
     getCategoryTasks,
     getTodayTasks,
     getTasks,
-    getCompleteTasks
+    getCompleteTasks,
   }
 })();
 

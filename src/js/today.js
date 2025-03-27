@@ -1,13 +1,13 @@
 import DOM from './DOM';
 import todoList from './todoList';
 
-export function displayToday() {
+export default function displayToday() {
   const tasks = todoList.getTodayTasks();
 
-  DOM.updateDom(tasks, 'Today');
-  DOM.removeTaskDom();
-  DOM.editTaskDom();
-  DOM.completeTaskDom();
-  DOM.sortTaskDom();
+  DOM.updateDOM(tasks, 'Today');
+  DOM.removeTaskDOM();
+  DOM.editTaskDOM();
+  DOM.completeTaskDOM();
+  DOM.sortTaskDOM();
   DOM.closeDialog();
 }

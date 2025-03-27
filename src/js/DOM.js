@@ -8,9 +8,9 @@ import { format, isPast, parseISO } from 'date-fns';
 import { loadTasks } from "./task";
 import todoList from './todoList';
 import project from './project';
-import { displayNext } from './next';
+import displayNext from './next';
 import { displaySearch } from './search';
-import { displayToday } from './today';
+import displayToday from './today';
 
 const DOM = (function () {
   function openDialog() {
@@ -24,7 +24,7 @@ const DOM = (function () {
     priority.value = '';
     category.value = '';
     search.value = '';
-    dialog.classList.remove("dialog__visible");
+    dialog.classList.remove('dialog__visible');
 
     setTimeout(() => {
       dialog.close();
@@ -35,7 +35,7 @@ const DOM = (function () {
     document.querySelector('.icon-tabler-x').style.opacity = 0;
   }
 
-  function updateDom(tasks, title, hidden = 1) {
+  function updateDOM(tasks, title, hidden = 1) {
     const mainContent = document.querySelector('.layout__main');
     mainContent.textContent = '';
     mainContent.insertAdjacentHTML( // Add DOM elements to the end of main
@@ -47,17 +47,17 @@ const DOM = (function () {
       `
     );
 
-    tasks.forEach(task => {
+    tasks.forEach((task) => {
       const taskDiv = document.createElement('div');
       taskDiv.classList.add('todo__list');
       taskDiv.dataset.date = task.getDate();
       taskDiv.dataset.category = task.getCategory();
-      taskDiv.dataset.checked = task.getChecklist();
+      taskDiv.dataset.checked = task.isChecked();
 
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
-      checkbox.checked = task.getChecklist();
-      checkbox.disabled = task.getChecklist();
+      checkbox.checked = task.isChecked();
+      checkbox.disabled = task.isChecked();
       checkbox.classList.add('list__checklist');
       checkbox.dataset.category = task.getCategory();
       checkbox.dataset.date = task.getDate();
@@ -135,18 +135,18 @@ const DOM = (function () {
     }
   }
 
-  function displayAddTaskDom() {
+  function displayAddTaskDOM() {
     openDialog();
 
-    const addTaskButton = document.querySelector('.form__create');
     const buttonText = document.querySelector('.create__text');
     buttonText.textContent = 'Add Task';
-
-    addTaskButton.removeEventListener('click', addTaskDom);
-    addTaskButton.addEventListener('click', addTaskDom);
+    
+    const addTaskButton = document.querySelector('.form__create');
+    addTaskButton.removeEventListener('click', addTaskDOM);
+    addTaskButton.addEventListener('click', addTaskDOM);
   }
 
-  function addTaskDom() {
+  function addTaskDOM() {
     let category = document.querySelector('#category').value;
     let title = document.querySelector('#title').value;
     let date = document.querySelector('#date').value;
@@ -158,9 +158,9 @@ const DOM = (function () {
     displayToday();
   }
 
-  function editTaskDom(value = '') {
+  function editTaskDOM(value = '') {
     const taskContainer = document.querySelectorAll('.todo__list');
-    taskContainer.forEach(element => {
+    taskContainer.forEach((element) => {
       if (element.dataset.checked === 'true') return;
 
       const editButton = document.createElement('button');
@@ -172,7 +172,7 @@ const DOM = (function () {
         let dateTask = element.dataset.date;
 
         if (tasks[categoryTask]) {
-          const task = tasks[categoryTask].find(task => task.getDate() === dateTask);
+          const task = tasks[categoryTask].find((task) => (task.getDate() === dateTask));
 
           if (task) {
             openDialog();
@@ -192,15 +192,25 @@ const DOM = (function () {
             document.querySelector('.create__text').textContent = 'Ok';
 
             const formButton = document.querySelector('.form__create');
+
             // Before adding a new listener, delete the previous ones
             const newButton = formButton.cloneNode(true);
             formButton.replaceWith(newButton); // Delete previous events
             newButton.addEventListener('click', () => {
-              todoList.editTask(categoryTask, dateTask, category.value, title.value, date.value, priority.value);
+              todoList.editTask(
+                categoryTask, 
+                dateTask, 
+                category.value, 
+                title.value, 
+                date.value, 
+                priority.value
+              );
               closeDialog();
               project.displayProject();
               reloadDOM(value);
-            }, { once: true }); // Automatically removes the addEventListener after it runs;
+              
+              // Automatically removes the addEventListener after it runs;
+            }, { once: true }); 
           }
         }
       });
@@ -210,7 +220,7 @@ const DOM = (function () {
     });
   }
 
-  function removeTaskDom() {
+  function removeTaskDOM() {
     const taskContainer = document.querySelectorAll('.todo__list');
     taskContainer.forEach(element => {
       element.insertAdjacentHTML('beforeend', `<button class="list__remove">${trashIcon}</button>`);
@@ -226,15 +236,15 @@ const DOM = (function () {
     });
   }
 
-  function sortTaskDom(value = '') {
+  function sortTaskDOM(value = '') {
     document.querySelector('.main__sort').addEventListener('click', () => {
       todoList.sortTask();
       reloadDOM(value);
     });
   }
 
-  function completeTaskDom(value = '') {
-    document.querySelectorAll('.list__checklist').forEach(checkbox => {
+  function completeTaskDOM(value = '') {
+    document.querySelectorAll('.list__checklist').forEach((checkbox) => {
       checkbox.addEventListener('change', function () {
         let categoryTask = this.dataset.category;
         let dateTask = this.dataset.date;
@@ -248,13 +258,13 @@ const DOM = (function () {
   return {
     openDialog,
     closeDialog,
-    updateDom,
+    updateDOM,
     reloadDOM,
-    displayAddTaskDom,
-    editTaskDom,
-    removeTaskDom,
-    sortTaskDom,
-    completeTaskDom
+    displayAddTaskDOM,
+    editTaskDOM,
+    removeTaskDOM,
+    sortTaskDOM,
+    completeTaskDOM,
   }
 })();
 

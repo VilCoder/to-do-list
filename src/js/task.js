@@ -5,12 +5,12 @@ class Task {
     this.title = title;
     this.dueDate = dueDate;
     this.priority = priority;
-    this.checklist = false;
+    this.checked = false;
   }
 
   static fromJSON(obj) {
     const task = new Task(obj.category, obj.title, obj.dueDate, obj.priority);
-    task.checklist = obj.checklist;
+    task.checked = obj.checked;
     return task;
   }
 
@@ -19,6 +19,7 @@ class Task {
   }
   setCategory(value) {
     this.category = value;
+    return this;
   }
 
   getTitle() {
@@ -26,6 +27,7 @@ class Task {
   }
   setTitle(value) {
     this.title = value;
+    return this;
   }
 
   getDate() {
@@ -33,6 +35,7 @@ class Task {
   }
   setDate(value) {
     this.dueDate = value;
+    return this;
   }
 
   getPriority() {
@@ -40,13 +43,15 @@ class Task {
   }
   setPriority(value) {
     this.priority = value;
+    return this;
   }
 
-  getChecklist() {
-    return this.checklist;
+  isChecked() {
+    return this.checked;
   }
-  setChecklist(value) {
-    this.checklist = value;
+  setChecked(value) {
+    this.checked = value;
+    return this;
   }
 }
 
@@ -61,9 +66,9 @@ function loadTasks() {
   const tasksData = JSON.parse(storedTasksData);
 
   // Converts each object into an instance of Task
-  for (let category in tasksData) {
+  Object.keys(tasksData).forEach((category) => {
     tasksData[category] = tasksData[category].map(Task.fromJSON);
-  }
+  })
 
   return tasksData;
 }
@@ -74,7 +79,8 @@ function saveTasks(obj) {
   if (Object.keys(tasks).length > 0) {
     localStorage.setItem('todoList', JSON.stringify(tasks));
   } else {
-    localStorage.removeItem('todoList'); // Completely removes storage if there are no tasks
+    // Completely removes storage if there are no tasks
+    localStorage.removeItem('todoList'); 
   }
 }
 

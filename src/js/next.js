@@ -1,13 +1,13 @@
 import DOM from './DOM';
 import todoList from './todoList';
 
-export function displayNext() {
+export default function displayNext() {
   const tasks = todoList.getTasks();
 
-  DOM.updateDom(tasks, 'Next');
-  DOM.removeTaskDom();
-  DOM.editTaskDom();
-  DOM.completeTaskDom();
-  DOM.sortTaskDom();
+  DOM.updateDOM(tasks, 'Next');
+  DOM.removeTaskDOM();
+  DOM.editTaskDOM();
+  DOM.completeTaskDOM();
+  DOM.sortTaskDOM();
   DOM.closeDialog();
 }
