@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const icons = document.querySelectorAll('.icon-tabler');
   const dialog = document.querySelector('#dialog');
   const closeDialogBtn = document.querySelector('.form__cancel');
-  
+
   menuButton.addEventListener('click', function () {
     aside.classList.toggle('layout__aside-visible');
-    
+
     const iconBars = document.querySelector('.icon-tabler-dots-vertical');
     const iconClose = document.querySelector('.icon-tabler-x');
-    let visible = document.querySelector('.layout__aside-visible');
+    const visible = document.querySelector('.layout__aside-visible');
 
     if (visible) {
       iconBars.style.opacity = 0;
@@ -40,11 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   options.forEach((option, index) => {
     option.addEventListener('click', () => {
-      options.forEach((option) => option.classList.remove('option__active'));
+      options.forEach((element) => element.classList.remove('option__active'));
       icons.forEach((icon) => icon.classList.remove('icon__active'));
-      document.querySelectorAll('.project__content')
-          .forEach((project) => project.classList.remove('option__active'));
-      
+      document
+        .querySelectorAll('.project__content')
+        .forEach((element) => element.classList.remove('option__active'));
+
       option.classList.add('option__active');
       icons[index + 1].classList.add('icon__active');
     });
@@ -59,14 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
     DOM.closeDialog();
   });
 
-
   closeDialogBtn.addEventListener('click', DOM.closeDialog);
-  document.querySelector('.dialog__form').addEventListener('click',(event) => event.stopPropagation());
-  
+  document
+    .querySelector('.dialog__form')
+    .addEventListener('click', (event) => event.stopPropagation());
+
   asideButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       switch (index) {
-        case 0: 
+        case 0:
           DOM.displayAddTaskDOM();
           break;
 
@@ -81,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         case 4:
           displayComplete();
           break;
-          
+
         default:
           displayToday();
       }

@@ -1,6 +1,6 @@
 class Task {
   constructor(...args) {
-    let [category, title, dueDate, priority] = args;
+    const [category, title, dueDate, priority] = args;
     this.category = category;
     this.title = title;
     this.dueDate = dueDate;
@@ -68,7 +68,7 @@ function loadTasks() {
   // Converts each object into an instance of Task
   Object.keys(tasksData).forEach((category) => {
     tasksData[category] = tasksData[category].map(Task.fromJSON);
-  })
+  });
 
   return tasksData;
 }
@@ -80,12 +80,8 @@ function saveTasks(obj) {
     localStorage.setItem('todoList', JSON.stringify(tasks));
   } else {
     // Completely removes storage if there are no tasks
-    localStorage.removeItem('todoList'); 
+    localStorage.removeItem('todoList');
   }
 }
 
-export {
-  Task,
-  saveTasks,
-  loadTasks,
-}
+export { Task, saveTasks, loadTasks };

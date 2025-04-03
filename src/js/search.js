@@ -5,22 +5,22 @@ import DOM from './DOM';
 
 function handlerEnterSearch() {
   const searchButton = document.querySelector('#search');
-  
+
   // Before adding a new listener, delete the previous ones
   const newSearchButton = searchButton.cloneNode(true);
   searchButton.replaceWith(newSearchButton); // Delete previous events
 
   newSearchButton.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      let searchValue = newSearchButton.value.toLowerCase();
-      displaySearch(searchValue)
+      const searchValue = newSearchButton.value.toLowerCase();
+      displaySearch(searchValue);
     }
   });
 }
 
 function displaySearch(searchValue) {
   const searchedValue = todoList.searchTasks(searchValue);
-  let title = `Search result for '${searchValue}'`;
+  const title = `Search result for '${searchValue}'`;
 
   DOM.closeDialog();
 
@@ -34,10 +34,10 @@ function displaySearch(searchValue) {
       <div class="todo__list">
            <p class="list__notfound">Not Found <i class="icon">${sadFaceIcon}</i></p>
        </div>
-      `
+      `,
     );
 
-    return false;
+    return;
   }
 
   DOM.updateDOM(searchedValue, title, 0);
@@ -47,7 +47,4 @@ function displaySearch(searchValue) {
   DOM.sortTaskDOM(searchValue);
 }
 
-export {
-  displaySearch,
-  handlerEnterSearch,
-}
+export { displaySearch, handlerEnterSearch };

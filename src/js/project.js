@@ -3,8 +3,8 @@ import { loadTasks } from './task';
 import todoList from './todoList';
 
 function random(min, max) {
-  let num = Math.floor(Math.random() * (max - min)) + min;
-  return num
+  const num = Math.floor(Math.random() * (max - min)) + min;
+  return num;
 }
 
 function randomColor() {
@@ -30,36 +30,41 @@ const project = (function () {
     const tasks = loadTasks();
     Object.keys(tasks).forEach((category) => {
       if (category) {
-        let color = randomColor();
+        const color = randomColor();
         const projectContain = document.createElement('li');
         projectContain.classList.add('project__content');
-  
+
         const projectSymbol = document.createElement('span');
         projectSymbol.classList.add('project__symbol');
         projectSymbol.textContent = '#';
-        projectSymbol.style.setProperty("--symbol-color", color);
-  
+        projectSymbol.style.setProperty('--symbol-color', color);
+
         const projectTitle = document.createElement('button');
         projectTitle.classList.add('project__title');
-        projectTitle.style.setProperty("--after-bg-color", color);
+        projectTitle.style.setProperty('--after-bg-color', color);
         projectTitle.dataset.title = category;
         projectTitle.textContent = category;
-  
-        projectTitle.addEventListener('click', () => {
-          document.querySelectorAll('.aside__user-options > li')
-              .forEach((option) => option.classList.remove('option__active'));
 
-          document.querySelectorAll('.icon-tabler')
-              .forEach((icon) => icon.classList.remove('icon__active'));
-              
-          document.querySelectorAll('.project__content')
-              .forEach((project) => project.classList.remove('option__active'));
-  
+        projectTitle.addEventListener('click', () => {
+          document
+            .querySelectorAll('.aside__user-options > li')
+            .forEach((option) => option.classList.remove('option__active'));
+
+          document
+            .querySelectorAll('.icon-tabler')
+            .forEach((icon) => icon.classList.remove('icon__active'));
+
+          document
+            .querySelectorAll('.project__content')
+            .forEach((projectElement) =>
+              projectElement.classList.remove('option__active'),
+            );
+
           projectContain.classList.add('option__active');
-  
+
           displayContent(category);
         });
-  
+
         projectContain.appendChild(projectSymbol);
         projectContain.appendChild(projectTitle);
         userProjects.appendChild(projectContain);
@@ -68,7 +73,7 @@ const project = (function () {
   }
 
   return {
-    displayContent, 
+    displayContent,
     displayProject,
   };
 })();

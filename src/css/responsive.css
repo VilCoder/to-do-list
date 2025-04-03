@@ -1,81 +1,81 @@
 /* ========================== TABLET MINI ========================== */
 @media (min-width: 520px) {
-    /* ====================== LAYOUT ======================*/
-    .layout__menu-toggle {
-      right: 2.5rem;
-    }
+  /* ====================== LAYOUT ======================*/
+  .layout__menu-toggle {
+    right: 2.5rem;
+  }
 
-    /* ====================== DIALOG ======================*/
-    #date,
-    #priority,
-    #category {
-      width: 15rem;
-    }
+  /* ====================== DIALOG ======================*/
+  #date,
+  #priority,
+  #category {
+    width: 15rem;
+  }
 
-    /* ====================== MAIN ======================*/
-    .list__info {
-      right: 10.5%;
-    }
+  /* ====================== MAIN ======================*/
+  .list__info {
+    right: 10.5%;
+  }
 }
 
 /* ========================== TABLET ========================== */
 @media (min-width: 768px) {
-    /* ====================== LAYOUT ======================*/
-    .layout__menu-toggle {
-      right: 3.5rem;
-    }
+  /* ====================== LAYOUT ======================*/
+  .layout__menu-toggle {
+    right: 3.5rem;
+  }
 
-    /* ====================== DIALOG ======================*/
-    #date,
-    #priority,
-    #category {
-      width: fit-content;
-    }
+  /* ====================== DIALOG ======================*/
+  #date,
+  #priority,
+  #category {
+    width: fit-content;
+  }
 
-    /* ====================== MAIN ======================*/
-    .list__info {
-      right: 7%;
-    }
+  /* ====================== MAIN ======================*/
+  .list__info {
+    right: 7%;
+  }
 }
 
 /* ========================== DESKTOP ========================== */
 @media (min-width: 1064px) {
-    /* ====================== LAYOUT ======================*/
-    .layout {
-      position: relative;
-      height: 83vh;
-      min-height: 80vh;
-      margin: 9vh auto;
-      display: grid;
-      grid-template-areas: "aside content";
-      grid-template-columns: 30% 70%;
-      border-radius: 4rem;
-      box-shadow: 0 0 100px -5px rgb(0 0 0 / 0.25);
-      overflow: hidden;
-    }
+  /* ====================== LAYOUT ======================*/
+  .layout {
+    position: relative;
+    height: 83vh;
+    min-height: 80vh;
+    margin: 9vh auto;
+    display: grid;
+    grid-template-areas: 'aside content';
+    grid-template-columns: 30% 70%;
+    border-radius: 4rem;
+    box-shadow: 0 0 100px -5px rgb(0 0 0 / 0.25);
+    overflow: hidden;
+  }
 
-    .layout__menu-toggle {
-      display: none;
-    }
+  .layout__menu-toggle {
+    display: none;
+  }
 
-    /* ====================== ASIDE ======================*/
-    .layout__aside {
-      grid-area: aside;
-      position: static;
-      margin-left: 0;
-      opacity: 1;
-    }
+  /* ====================== ASIDE ======================*/
+  .layout__aside {
+    grid-area: aside;
+    position: static;
+    margin-left: 0;
+    opacity: 1;
+  }
 
-    /* ====================== MAIN ======================*/
-    .layout__main {
-      grid-area: content;
-    }
+  /* ====================== MAIN ======================*/
+  .layout__main {
+    grid-area: content;
+  }
 
-    .main__sort {
-      margin-right: 0;
-    }
+  .main__sort {
+    margin-right: 0;
+  }
 
-    .list__info {
-      right: 6%;
-    }
+  .list__info {
+    right: 6%;
+  }
 }

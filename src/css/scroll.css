@@ -1,7 +1,7 @@
 /* ====================== GENERAL STYLES ======================*/
 :root {
-  --color-scrollbar: #D3D3D4;
-  --color-background-scrollbar: #EEE;
+  --color-scrollbar: #d3d3d4;
+  --color-background-scrollbar: #eee;
 }
 
 /* ====================== SCROLL CHROME SIDEBAR ======================*/
@@ -29,4 +29,3 @@
   background-color: transparent;
   margin: 40px 0;
 }
-

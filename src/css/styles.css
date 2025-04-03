@@ -22,7 +22,7 @@ body {
   font-size: 1.5rem;
   background-color: var(--background-color);
   color: var(--color-text);
-  background-image: url("../image/fondo.png");
+  background-image: url('../image/fondo.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: -20px -40px;
@@ -39,11 +39,10 @@ svg {
   color: var(--icon-color);
 }
 
-
 /* ====================== LAYOUT ======================*/
 .layout {
   display: grid;
-  grid-template-areas: "content";
+  grid-template-areas: 'content';
   grid-template-columns: 100%;
   width: 90%;
   height: 100vh;
@@ -82,7 +81,6 @@ svg {
 .icon-tabler-x {
   opacity: 0;
 }
-
 
 /* ====================== ASIDE ======================*/
 .layout__aside {
@@ -133,8 +131,8 @@ svg {
   margin-left: auto;
 }
 
-.aside__user-options>*,
-.aside__user-projects>* {
+.aside__user-options > *,
+.aside__user-projects > * {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -220,7 +218,6 @@ svg {
   width: 100%;
 }
 
-
 /* ====================== DIALOG ======================*/
 .layout__dialog::backdrop {
   background-color: rgb(0 0 0 / 0.22);
@@ -238,7 +235,9 @@ svg {
   border-radius: 15px;
   opacity: 0;
   z-index: 99999;
-  transition: left 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transition:
+    left 0.5s ease-in-out,
+    opacity 0.5s ease-in-out;
 }
 
 .dialog__visible {
@@ -282,7 +281,7 @@ svg {
   padding: 1.5rem;
 }
 
-.form__group>div {
+.form__group > div {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -361,7 +360,12 @@ svg {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(12deg, transparent, rgb(255 255 255 / 0.2), transparent);
+  background: linear-gradient(
+    12deg,
+    transparent,
+    rgb(255 255 255 / 0.2),
+    transparent
+  );
   transform: translateX(-100%);
   transition: transform 0.5s ease;
   z-index: 0;
@@ -372,7 +376,6 @@ svg {
   transform: translateX(100%);
 }
 
-
 /* ====================== MAIN ======================*/
 .layout__main {
   grid-area: content;
@@ -380,8 +383,8 @@ svg {
   overflow: auto;
 }
 
-.layout__main>*,
-.main__todo>div {
+.layout__main > *,
+.main__todo > div {
   margin-bottom: 2rem;
 }
 
@@ -395,7 +398,7 @@ svg {
   border-bottom: 1px solid var(--icon-color);
 }
 
-.list__checklist[type="checkbox"] {
+.list__checklist[type='checkbox'] {
   display: grid;
   place-content: center;
   -webkit-appearance: none;
@@ -407,7 +410,7 @@ svg {
   cursor: pointer;
 }
 
-.list__checklist[type="checkbox"]::before {
+.list__checklist[type='checkbox']::before {
   content: '';
   width: 1rem;
   height: 1rem;
@@ -419,42 +422,39 @@ svg {
   transition: transform 120ms ease-in-out;
 }
 
-.list__checklist[type="checkbox"]:hover::before {
+.list__checklist[type='checkbox']:hover::before {
   transform: scale(1);
 }
 
-.list__checklist[type="checkbox"]:checked::before {
+.list__checklist[type='checkbox']:checked::before {
   transform: scale(1);
 }
 
-.checklist__p-1[type="checkbox"] {
+.checklist__p-1[type='checkbox'] {
   border: 1px solid var(--danger-color);
 }
 
-.checklist__p-1[type="checkbox"]:hover,
-.checklist__p-1[type="checkbox"]:checked {
+.checklist__p-1[type='checkbox']:hover,
+.checklist__p-1[type='checkbox']:checked {
   background-color: var(--danger-color);
-
 }
 
-.checklist__p-2[type="checkbox"] {
+.checklist__p-2[type='checkbox'] {
   border: 1px solid var(--warning-color);
 }
 
-.checklist__p-2[type="checkbox"]:hover,
-.checklist__p-2[type="checkbox"]:checked {
+.checklist__p-2[type='checkbox']:hover,
+.checklist__p-2[type='checkbox']:checked {
   background-color: var(--warning-color);
-
 }
 
-.checklist__p-3[type="checkbox"] {
+.checklist__p-3[type='checkbox'] {
   border: 1px solid var(--info-color);
 }
 
-.checklist__p-3[type="checkbox"]:hover,
-.checklist__p-3[type="checkbox"]:checked {
+.checklist__p-3[type='checkbox']:hover,
+.checklist__p-3[type='checkbox']:checked {
   background-color: var(--info-color);
-
 }
 
 .list__title {
@@ -479,7 +479,7 @@ svg {
 }
 
 .list__date-category {
-  margin-left: auto
+  margin-left: auto;
 }
 
 .list__edit {
@@ -541,5 +541,5 @@ svg {
 
 .main__sort:hover {
   color: var(--danger-color);
-  fill: var(--danger-color)
+  fill: var(--danger-color);
 }

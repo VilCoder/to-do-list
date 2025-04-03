@@ -5,7 +5,7 @@ import sortIcon from '../icons/sort.svg';
 
 import { format, isPast, parseISO } from 'date-fns';
 
-import { loadTasks } from "./task";
+import { loadTasks } from './task';
 import todoList from './todoList';
 import project from './project';
 import displayNext from './next';
@@ -13,24 +13,33 @@ import { displaySearch } from './search';
 import displayToday from './today';
 
 const DOM = (function () {
+  const dialog = document.querySelector('#dialog');
+  const categoryInput = document.querySelector('#category');
+  const titleInput = document.querySelector('#title');
+  const dateInput = document.querySelector('#date');
+  const priorityInput = document.querySelector('#priority');
+  const searchInput = document.querySelector('#search');
+
   function openDialog() {
     dialog.showModal();
     dialog.classList.add('dialog__visible');
   }
 
   function closeDialog() {
-    title.value = '';
-    date.value = '';
-    priority.value = '';
-    category.value = '';
-    search.value = '';
+    titleInput.value = '';
+    dateInput.value = '';
+    priorityInput.value = '';
+    categoryInput.value = '';
+    searchInput.value = '';
     dialog.classList.remove('dialog__visible');
 
     setTimeout(() => {
       dialog.close();
     }, 500);
 
-    document.querySelector('.layout__aside').classList.remove('layout__aside-visible');
+    document
+      .querySelector('.layout__aside')
+      .classList.remove('layout__aside-visible');
     document.querySelector('.icon-tabler-dots-vertical').style.opacity = 1;
     document.querySelector('.icon-tabler-x').style.opacity = 0;
   }
@@ -38,13 +47,14 @@ const DOM = (function () {
   function updateDOM(tasks, title, hidden = 1) {
     const mainContent = document.querySelector('.layout__main');
     mainContent.textContent = '';
-    mainContent.insertAdjacentHTML( // Add DOM elements to the end of main
+    mainContent.insertAdjacentHTML(
+      // Add DOM elements to the end of main
       'beforeend',
       `
       <div class="main__sort"><i class="icon">${sortIcon}</i> <p>Sort by priority</p></div>
       <h3 class="main__title">${title}</h3>
       <h4 class="main___subtitle">My Projects</h4>
-      `
+      `,
     );
 
     tasks.forEach((task) => {
@@ -63,7 +73,7 @@ const DOM = (function () {
       checkbox.dataset.date = task.getDate();
 
       if (task.getPriority()) {
-        let priority = task.getPriority();
+        const priority = task.getPriority();
 
         switch (priority) {
           case 'p1':
@@ -91,7 +101,7 @@ const DOM = (function () {
       const span = document.createElement('span');
       span.classList.add('list__info');
 
-      let date = task.getDate();
+      const date = task.getDate();
       let parsedDate = '';
 
       if (date) {
@@ -100,7 +110,10 @@ const DOM = (function () {
           span.textContent = 'Expired';
         }
 
-        parsedDate = format(parseISO(task.getDate()), 'd/MM/y, p').toLowerCase();
+        parsedDate = format(
+          parseISO(task.getDate()),
+          'd/MM/y, p',
+        ).toLowerCase();
       }
 
       taskDiv.appendChild(span);
@@ -114,7 +127,7 @@ const DOM = (function () {
             <i class="list__date-icon">${alarmIcon}</i>
             <span class="list__date-category">${task.getCategory()}</span>
           </div>
-        `
+        `,
       );
 
       mainContent.appendChild(taskDiv);
@@ -122,7 +135,9 @@ const DOM = (function () {
   }
 
   function reloadDOM(value) {
-    let mainTitle = document.querySelector('.main__title').textContent.toLowerCase();
+    const mainTitle = document
+      .querySelector('.main__title')
+      .textContent.toLowerCase();
 
     if (mainTitle === 'today') {
       displayToday();
@@ -140,19 +155,19 @@ const DOM = (function () {
 
     const buttonText = document.querySelector('.create__text');
     buttonText.textContent = 'Add Task';
-    
+
     const addTaskButton = document.querySelector('.form__create');
     addTaskButton.removeEventListener('click', addTaskDOM);
     addTaskButton.addEventListener('click', addTaskDOM);
   }
 
   function addTaskDOM() {
-    let category = document.querySelector('#category').value;
-    let title = document.querySelector('#title').value;
-    let date = document.querySelector('#date').value;
-    let priority = document.querySelector('#priority').value;
-
-    todoList.createTask(category, title, date, priority);
+    todoList.createTask(
+      categoryInput.value,
+      titleInput.value,
+      dateInput.value,
+      priorityInput.value,
+    );
     closeDialog();
     project.displayProject();
     displayToday();
@@ -161,33 +176,30 @@ const DOM = (function () {
   function editTaskDOM(value = '') {
     const taskContainer = document.querySelectorAll('.todo__list');
     taskContainer.forEach((element) => {
-      if (element.dataset.checked === 'true') return;
+      if (element.dataset.checked === 'true') {
+        return;
+      }
 
       const editButton = document.createElement('button');
       editButton.classList.add('list__edit');
       editButton.innerHTML = editIcon;
       editButton.addEventListener('click', () => {
         const tasks = loadTasks();
-        let categoryTask = element.dataset.category;
-        let dateTask = element.dataset.date;
+        const categoryTask = element.dataset.category;
+        const dateTask = element.dataset.date;
 
         if (tasks[categoryTask]) {
-          const task = tasks[categoryTask].find((task) => (task.getDate() === dateTask));
+          const taskFound = tasks[categoryTask].find(
+            (task) => task.getDate() === dateTask,
+          );
 
-          if (task) {
+          if (taskFound) {
             openDialog();
 
-            const category = document.querySelector('#category');
-            category.value = task.getCategory();
-
-            const title = document.querySelector('#title');
-            title.value = task.getTitle();
-
-            const date = document.querySelector('#date');
-            date.value = task.getDate();
-
-            const priority = document.querySelector('#priority');
-            priority.value = task.getPriority();
+            categoryInput.value = taskFound.getCategory();
+            titleInput.value = taskFound.getTitle();
+            dateInput.value = taskFound.getDate();
+            priorityInput.value = taskFound.getPriority();
 
             document.querySelector('.create__text').textContent = 'Ok';
 
@@ -196,21 +208,25 @@ const DOM = (function () {
             // Before adding a new listener, delete the previous ones
             const newButton = formButton.cloneNode(true);
             formButton.replaceWith(newButton); // Delete previous events
-            newButton.addEventListener('click', () => {
-              todoList.editTask(
-                categoryTask, 
-                dateTask, 
-                category.value, 
-                title.value, 
-                date.value, 
-                priority.value
-              );
-              closeDialog();
-              project.displayProject();
-              reloadDOM(value);
-              
-              // Automatically removes the addEventListener after it runs;
-            }, { once: true }); 
+            newButton.addEventListener(
+              'click',
+              () => {
+                todoList.editTask(
+                  categoryTask,
+                  dateTask,
+                  categoryInput.value,
+                  titleInput.value,
+                  dateInput.value,
+                  priorityInput.value,
+                );
+                closeDialog();
+                project.displayProject();
+                reloadDOM(value);
+
+                // Automatically removes the addEventListener after it runs;
+              },
+              { once: true },
+            );
           }
         }
       });
@@ -222,13 +238,16 @@ const DOM = (function () {
 
   function removeTaskDOM() {
     const taskContainer = document.querySelectorAll('.todo__list');
-    taskContainer.forEach(element => {
-      element.insertAdjacentHTML('beforeend', `<button class="list__remove">${trashIcon}</button>`);
+    taskContainer.forEach((element) => {
+      element.insertAdjacentHTML(
+        'beforeend',
+        `<button class="list__remove">${trashIcon}</button>`,
+      );
       element.lastChild.onclick = () => {
         element.remove();
 
-        let categoryTask = element.dataset.category;
-        let dateTask = element.dataset.date;
+        const categoryTask = element.dataset.category;
+        const dateTask = element.dataset.date;
 
         todoList.removeTask(categoryTask, dateTask);
         project.displayProject();
@@ -246,8 +265,8 @@ const DOM = (function () {
   function completeTaskDOM(value = '') {
     document.querySelectorAll('.list__checklist').forEach((checkbox) => {
       checkbox.addEventListener('change', function () {
-        let categoryTask = this.dataset.category;
-        let dateTask = this.dataset.date;
+        const categoryTask = this.dataset.category;
+        const dateTask = this.dataset.date;
 
         todoList.completeTask(categoryTask, dateTask, this.checked);
         reloadDOM(value);
@@ -265,7 +284,7 @@ const DOM = (function () {
     removeTaskDOM,
     sortTaskDOM,
     completeTaskDOM,
-  }
+  };
 })();
 
 export default DOM;
