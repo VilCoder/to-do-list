@@ -17,6 +17,9 @@ module.exports = {
       template: './src/template.html',
     }),
   ],
+  stats: {
+    loggingDebug: ['babel-loader'],
+  },
   module: {
     rules: [
       {
@@ -34,6 +37,22 @@ module.exports = {
       {
         test: /\.svg$/i,
         loader: 'svg-inline-loader',
+      },
+      {
+        test: /\.(?:js|mjs|cjs)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            exclude: [
+              /node_modules[/]core-js/,
+              /node_modules[/]webpack[/]buildin/,
+            ],
+            targets: 'defaults',
+            presets: [['@babel/preset-env']],
+            plugins: ['@babel/plugin-transform-runtime'],
+          },
+        },
       },
     ],
   },
